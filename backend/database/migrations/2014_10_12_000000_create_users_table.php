@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->string('profile_picture');
             $table->string('phoneNumber')->nullable();
             $table->timestamps(); // Adds created_at and updated_at columns
+            
         });
     }
 
