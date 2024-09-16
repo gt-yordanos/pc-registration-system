@@ -12,7 +12,8 @@ class CreatePcsTable extends Migration
             $table->id('pc_id');
             $table->string('serial_number')->unique();
             $table->foreignId('owner_id')->constrained('students', 'student_id')->onDelete('cascade');
-            $table->enum('status', ['registered', 'unregistered'])->default('unregistered');
+            $table->string('pc_brand');
+            $table->string('pc_color');
             $table->timestamps();
         });
     }
