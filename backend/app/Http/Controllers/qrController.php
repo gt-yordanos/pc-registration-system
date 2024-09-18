@@ -2,51 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\QRCodeScan;
+use App\Models\PC;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Mail\QrCodeEmail; 
 
-class QRCodeScanController extends Controller
+class QRCodeController extends Controller
 {
-    public function index()
-    {
-        return QRCodeScan::with(['admin', 'student', 'pc'])->get();
-    }
-
-    public function show($id)
-    {
-        return QRCodeScan::with(['admin', 'student', 'pc'])->findOrFail($id);
-    }
-
-    public function store(Request $request)
+    // Generate a QR code for a given PC
+    public function generate(Request $request)
     {
         $request->validate([
-            'admin_id' => 'required|exists:admins,admin_id',
-            'student_id' => 'required|exists:students,student_id',
-            'pc_id' => 'required|exists:pcs,pc_id',
+            'serial_number' => 'required|string|exists:pcs,serial_number',
         ]);
 
-        $scan = QRCodeScan::create($request->all());
-        return response()->json($scan, 201);
+        // Generate QR code as an image
+        $qrCode = $this->createQRCode($request->serial_number);
+
+        // send the QR code via email
+         Mail::to($request->user()->email)->send(new QrCodeEmail($qrCode));
+
+        return response()->json(['qr_code' => $qrCode], 201);
     }
 
-    public function update(Request $request, $id)
+    // Create a QR code
+    private function createQRCode($data)
     {
-        $scan = QRCodeScan::findOrFail($id);
+        // Generate QR code as an image
+        $qrCodeImage = QrCode::format('png')->size(300)->generate($data);
 
+        // Store the QR code image in storage
+        $filePath = 'qrcodes/' . uniqid() . '.png';
+        \Storage::put($filePath, $qrCodeImage);
+
+        return asset($filePath); // Return URL to the stored QR code
+    }
+
+    // Scan a QR code and retrieve PC information
+    public function scan(Request $request)
+    {
+        // Validate request input
         $request->validate([
-            'admin_id' => 'sometimes|required|exists:admins,admin_id',
-            'student_id' => 'sometimes|required|exists:students,student_id',
-            'pc_id' => 'sometimes|required|exists:pcs,pc_id',
+            'qr_code' => 'required|string',
         ]);
 
-        $scan->update($request->all());
-        return response()->json($scan);
-    }
+        // Retrieve PC information based on QR code (serial number)
+        $pc = PC::where('serial_number', $request->qr_code)->first();
 
-    public function delete($id)
-    {
-        $scan = QRCodeScan::findOrFail($id);
-        $scan->delete();
-        return response()->json(null, 204);
+        if (!$pc) {
+            return response()->json(['message' => 'PC not found'], 404);
+        }
+
+        return response()->json($pc, 200);
     }
 }
