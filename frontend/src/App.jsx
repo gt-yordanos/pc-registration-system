@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Students from './Students';
 import Admins from './Admins';
 
+
 const App = () => {
   return (
     <Router>
@@ -15,3 +16,6 @@ const App = () => {
 };
 
 export default App;
+
+
+
