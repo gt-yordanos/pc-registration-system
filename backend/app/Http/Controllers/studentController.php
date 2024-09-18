@@ -101,6 +101,7 @@ public function delete($id)
 
     return response()->json(['message' => 'Student deleted successfully'], 200);
 }
+
 }
 
 
