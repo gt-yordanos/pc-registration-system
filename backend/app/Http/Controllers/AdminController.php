@@ -92,5 +92,4 @@ class AdminController extends Controller
         $admin->delete();
         return response()->json(null, 204);
     }
-    
 }

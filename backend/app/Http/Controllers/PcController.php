@@ -61,5 +61,4 @@ class PCController extends Controller
         $pc->delete();
         return response()->json(null, 204);
     }
-    
 }
