@@ -6,7 +6,7 @@ use App\Models\PC;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use App\Mail\QrCodeEmail; 
+use App\Mail\qrCodeEmail; 
 
 class QRCodeController extends Controller
 {
