@@ -1,12 +1,12 @@
 import React, { createContext, useState, useContext } from 'react';
 
-// Create the context
 const SidebarContext = createContext();
 
 // Create a provider component
 export const SidebarProvider = ({ children }) => {
   const [sideBarStatus, setSideBarStatus] = useState('visible');
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('dashboard'); // Default selected item
 
   // Function to toggle the sidebar visibility
   const toggleSidebar = () => {
@@ -18,8 +18,13 @@ export const SidebarProvider = ({ children }) => {
     setIsCollapsed(prevState => !prevState);
   };
 
+  // Function to set the selected item
+  const handleItemSelect = (item) => {
+    setSelectedItem(item);
+  };
+
   return (
-    <SidebarContext.Provider value={{ sideBarStatus, toggleSidebar, isCollapsed, toggleCollapse }}>
+    <SidebarContext.Provider value={{ sideBarStatus, toggleSidebar, isCollapsed, toggleCollapse, selectedItem, handleItemSelect }}>
       {children}
     </SidebarContext.Provider>
   );
@@ -27,5 +32,9 @@ export const SidebarProvider = ({ children }) => {
 
 // Create a custom hook to use the SidebarContext
 export const useSidebar = () => {
-  return useContext(SidebarContext);
+  const context = useContext(SidebarContext);
+  if (!context) {
+    throw new Error('useSidebar must be used within a SidebarProvider');
+  }
+  return context;
 };

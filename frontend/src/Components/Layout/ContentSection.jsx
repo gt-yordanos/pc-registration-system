@@ -1,26 +1,29 @@
 import React from 'react';
+import Dashboard from '../../Pages/Dashboard'; // Import your components
+import Students from '../../Pages/Students';
+import Admins from '../../Pages/Admins';
+import Settings from '../../Pages/Settings';
 
 const ContentSection = ({ selectedItem, isSidebarVisible }) => {
   const renderContent = () => {
     switch (selectedItem) {
       case 'dashboard':
-        return <div>Dashboard Content</div>;
+        return <Dashboard />;
       case 'students':
-        return <div>Students Content</div>;
+        return <Students />;
       case 'admins':
-        return <div>Admins Content</div>;
+        return <Admins />;
       case 'settings':
-        return <div>Settings Content</div>;
+        return <Settings />;
       default:
-        return <div>Welcome</div>;
+        return null; // Return null for empty static content
     }
   };
 
   return (
     <div
-      className={p-8 flex-grow transition-all duration-300 ${isSidebarVisible ? 'ml-64' : 'ml-0'}}
+      className={`bg-red-300 w-full flex-grow transition-all duration-300 ${isSidebarVisible ? 'ml-64' : 'ml-0'} h-full overflow-auto`}
     >
-      <h2 className="text-2xl font-bold">{selectedItem.charAt(0).toUpperCase() + selectedItem.slice(1)}</h2>
       {renderContent()}
     </div>
   );

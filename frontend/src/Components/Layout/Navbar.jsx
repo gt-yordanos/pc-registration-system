@@ -1,9 +1,9 @@
 import React from 'react';
-import { useSidebar } from './SidebarContext';
-import computerIcon from './assets/laptop-minimalistic-svgrepo-com.svg';
-import ProfileIcon from './assets/profile-svgrepo-com.svg';
-import closeIcon from './assets/bx-x.svg';
-import menuIcon from './assets/bx-menu.svg';
+import { useSidebar } from '../../Contexts/SidebarContext';
+import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
+import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
+import closeIcon from '../../assets/bx-x.svg';
+import menuIcon from '../../assets/bx-menu.svg';
 
 const Navbar = () => {
   const { sideBarStatus, toggleSidebar } = useSidebar(); 

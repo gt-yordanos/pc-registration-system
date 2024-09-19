@@ -1,8 +1,7 @@
-// src/components/Dashboard.jsx
 import React from 'react';
-import BarChart from '../component/chart/BarChart';
-import PieChart from '../component/chart/PieChart';
-import InfoCard from '../component/cards/dashbord-cards/InfoCard';
+import BarChart from '../Components/Dashboard/BarChart';
+import PieChart from '../Components/Dashboard/PieChart';
+import InfoCard from '../Components/Dashboard/InfoCard';
 
 const Dashboard = () => {
   // Data for the charts
@@ -67,10 +66,10 @@ const Dashboard = () => {
   const totalInAndOut = pieData2.datasets[0].data.reduce((a, b) => a + b, 0);
 
   return (
-    <div className="p-4 min-h-screen" style={{ backgroundColor: '#001F3D', color:'CCFFFF' }}>
-    <h1 className="text-2xl font-bold mb-4" style={{ color: '#CCFFFF' }}>Dashboard</h1>
+    <div className="p-4 w-full h-full" style={{ backgroundColor: '#001F3D', color:'CCFFFF' }}>
+      <h1 className="text-2xl font-bold mb-4" style={{ color: '#CCFFFF' }}>Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" style={{ color: '#CCFFFF' }}>
+      <div className="grid grid-cols-1 md:grid-cols-[40%,60%] gap-4 mb-4" style={{ color: '#CCFFFF' }}>
         {/* Container 1 for InfoCards */}
         <div className="bg-[#1c4a72] p-4 rounded-md shadow-md">
           <div className="mb-4"> {/* 15px margin bottom */}
@@ -86,13 +85,14 @@ const Dashboard = () => {
             <InfoCard title="Total In and Out" value={totalInAndOut} />
           </div>
         </div>
+        
         {/* Container 2 for Charts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-[#00294D] rounded-md shadow-md">
             <h2 className="text-lg font-semibold mb-2">Admin Registrations</h2>
             <BarChart data={barData1} options={options} />
           </div>
-          <div className="p-4 bg-[#00294D]rounded-md shadow-md">
+          <div className="p-4 bg-[#00294D] rounded-md shadow-md">
             <h2 className="text-lg font-semibold mb-2">PC Registrations</h2>
             <BarChart data={barData2} options={options} />
           </div>

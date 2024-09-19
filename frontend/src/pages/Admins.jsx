@@ -71,7 +71,7 @@ const Admins = () => {
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <FaSearch className="text-blue-300 ml-2 cursor-pointer h-10" />
+          <FaSearch className="text-blue-300 ml-2 cursor-pointer h-10 mr-2" />
         </div>
       </div>
 
