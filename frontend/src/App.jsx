@@ -1,11 +1,13 @@
-import React from 'react'
+// src/App.jsx
+import React from 'react';
+import Dashboard from './pages/Dashboard';
 
-const App = () => {
+function App() {
   return (
-    <div>
-      
+    <div className="App">
+      <Dashboard />
     </div>
-  )
+  );
 }
 
-export default App;
+export default App
