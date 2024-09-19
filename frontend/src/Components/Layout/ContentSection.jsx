@@ -22,7 +22,7 @@ const ContentSection = ({ selectedItem, isSidebarVisible }) => {
 
   return (
     <div
-      className={`bg-red-300 w-full flex-grow transition-all duration-300 ${isSidebarVisible ? 'ml-64' : 'ml-0'} h-full overflow-auto`}
+      className={`bg-primary w-full flex-grow transition-all duration-300 ${isSidebarVisible ? 'ml-64' : 'ml-0'} h-full overflow-auto`}
     >
       {renderContent()}
     </div>
