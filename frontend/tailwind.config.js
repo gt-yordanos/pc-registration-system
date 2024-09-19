@@ -1,4 +1,3 @@
-// tailwind.config.js
 module.exports = {
   content: [
     './index.html',
@@ -6,10 +5,17 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'custom': '1000px', // Add custom screen size for 900px
+      },
       colors: {
-       
+        // You can add your custom colors here if needed
+        'primary': '#001F3D',
+        'secondary': '#1c4a72',
+        'highlight': '#00294D',
+        'text-light': '#CCFFFF',
       },
     },
   },
   plugins: [],
-}
+};

@@ -66,10 +66,10 @@ const Dashboard = () => {
   const totalInAndOut = pieData2.datasets[0].data.reduce((a, b) => a + b, 0);
 
   return (
-    <div className="p-4 w-full h-full" style={{ backgroundColor: '#001F3D', color:'CCFFFF' }}>
+    <div className="p-4 w-full h-full" style={{ backgroundColor: '#001F3D', color: '#CCFFFF' }}>
       <h1 className="text-2xl font-bold mb-4" style={{ color: '#CCFFFF' }}>Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-[40%,60%] gap-4 mb-4" style={{ color: '#CCFFFF' }}>
+      <div className="grid grid-cols-1 custom:grid-cols-[35%,65%] gap-4 mb-4" style={{ color: '#CCFFFF' }}>
         {/* Container 1 for InfoCards */}
         <div className="bg-[#1c4a72] p-4 rounded-md shadow-md">
           <div className="mb-4"> {/* 15px margin bottom */}
@@ -85,7 +85,7 @@ const Dashboard = () => {
             <InfoCard title="Total In and Out" value={totalInAndOut} />
           </div>
         </div>
-        
+
         {/* Container 2 for Charts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-[#00294D] rounded-md shadow-md">
