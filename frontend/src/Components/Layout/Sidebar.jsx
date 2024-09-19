@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
-import { useSidebar } from './SidebarContext';
+import { useSidebar } from './contexts/SidebarContext';
 import dashboardIcon from './assets/bxs-dashboard.svg';
 import studentsIcon from './assets/student-person-part-2-svgrepo-com.svg';
 import adminsIcon from './assets/manager-avatar-svgrepo-com.svg';
