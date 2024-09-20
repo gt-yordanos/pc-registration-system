@@ -95,3 +95,14 @@ pc-registration-system/
 ├── package-lock.json
 └── package.json
 ```
+## Getting Started
+
+To set up the project locally, follow these steps:
+
+### Prerequisites
+
+- PHP >= 7.3
+- Composer
+- Node.js and npm
+- Laravel
+- React
