@@ -1,10 +1,18 @@
 # PC Registration System
 
-This repository contains the PC Registration System developed for university students. The system aims to register students' PCs for secure usage within the university premises and to monitor when PCs are taken out of the university. This project was developed during our internship program at Kuraz Tech, and we want to extend our heartfelt gratitude to the entire Kuraz Tech team for their support and guidance throughout the development process.
+This repository contains the PC Registration System developed for university students. The system aims to register students' PCs for secure usage within the university premises and to monitor when PCs are taken out of the university. This project was developed during our internship program at **Kuraz Tech**, and we want to extend our heartfelt gratitude to the entire Kuraz Tech team for their support and guidance throughout the development process.
 
 ## About Kuraz Tech
 
 Kuraz Tech provided us with an invaluable opportunity to work on this project, offering mentorship, resources, and a collaborative environment that greatly contributed to our learning and development. We are grateful for their dedication to nurturing young talent and supporting our growth as software developers.
+
+## Table of Contents
+- [System Overview](#system-overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Folder Structure](#folder-structure)
+- [Getting Started](#getting-started)
+- [Acknowledgments](#acknowledgments)
 
 ## System Overview
 
@@ -13,28 +21,36 @@ The PC Registration System is designed to:
 - Register students' PCs when they are brought into the university.
 - Generate a QR code for each registered PC.
 - Allow admins to scan the QR code when a PC is taken out of the university to ensure proper authorization.
-- Include two types of users:
-  - **Super Admin**: Manages all students and admins.
-  - **Admin**: Registers students' PCs through a mobile app.
-- The system comprises a website for the super admin and a mobile app for the admin to facilitate PC registration.
+  
+### User Roles:
+
+- **Super Admin**: Manages all students and admins via a web application.
+- **Admin**: Registers students' PCs and scans QR codes using a mobile app.
 
 ## Features
 
 - **Student PC Registration**: Admins can register PCs brought by students and generate a unique QR code for each registered PC.
 - **QR Code Scanning**: When a student takes their PC out of the university, the admin scans the QR code to ensure it's authorized.
 - **User Roles**:
-  - **Super Admin**: Manages the entire system, including overseeing admins and all registered PCs. Accessed through a website.
+  - **Super Admin**: Manages the entire system, including overseeing admins and all registered PCs. Accessed through a web application.
   - **Admin**: Registers student PCs and scans QR codes. Admins are registered by the super admin and use a mobile app for their tasks.
-  
-## Getting Started
 
-To use this repository, follow these steps:
+## Technologies Used
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/gt-yordanos/pc-registration-system.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd pc-registration-system
-```
+- **Backend**: PHP (Laravel)
+- **Frontend**: JavaScript (React, Tailwind CSS)
+- **Mobile App**: [Specify technology, e.g., React Native or Flutter]
+
+### Languages:
+
+- **PHP**: 45.7%
+- **JavaScript**: 20.8%
+- **C++**: 11.6%
+- **CMake**: 9.5%
+- **Blade**: 9.5%
+- **Swift**: 0.8%
+- **Other**: 2.1%
+## Folder Structure
+
+The project has a well-organized folder structure separating the backend, frontend, and mobile app components:
+
