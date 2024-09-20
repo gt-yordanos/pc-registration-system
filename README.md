@@ -172,3 +172,19 @@ To set up the project locally, follow these steps:
 ## Acknowledgments
 
 We would like to express our sincere gratitude to **Kuraz Tech** for their unwavering support and guidance throughout this project.
+# Contact
+
+For any inquiries or feedback, please contact:
+
+- [gt-yordanos](https://github.com/gt-yordanos)
+- [Yabe12](https://github.com/Yabe12)
+- [Yordito](https://github.com/Yordito)
+- [bezawitsebsibe](https://github.com/bezawitsebsibe)
+- [maki-max](https://github.com/maki-max)
+- [edenzewdu](https://github.com/edenzewdu)
+- [Elsabeth721](https://github.com/Elsabeth721)
+- [YetuAb](https://github.com/YetuAb)
+- [eteaby](https://github.com/eteaby)
+
+Feel free to explore, contribute, or raise issues to help us improve the system.
+
