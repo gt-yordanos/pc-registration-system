@@ -154,3 +154,21 @@ To set up the project locally, follow these steps:
    ```bash
    npm run dev
    ```
+## Mobile App Setup
+
+1. Navigate to the mobile directory:
+
+   ```bash
+   cd ../mobile
+   ```
+2. Install dependencies:
+
+   [Instructions specific to the mobile app technology used, e.g., React Native or Flutter.]
+
+3. Run the mobile app:
+
+   [Instructions on how to run the mobile app on an emulator or device.]
+
+## Acknowledgments
+
+We would like to express our sincere gratitude to **Kuraz Tech** for their unwavering support and guidance throughout this project.
