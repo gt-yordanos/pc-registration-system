@@ -30,10 +30,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::post('/signup' , [AuthController::class, 'signup']);
-Route::post('/login' , [AuthController::class, 'login']);
-Route::post('/logout' , [AuthController::class, 'logout']);
-
 
 // Group routes for all controllers
 Route::group(['prefix' => 'api'], function () {
@@ -71,4 +67,8 @@ Route::group(['prefix' => 'api'], function () {
 });
 
 
+
+Route::post('/signup' , [AuthController::class, 'signup']);
+Route::post('/login' , [AuthController::class, 'login']);
+Route::post('/logout' , [AuthController::class, 'logout']);
 
