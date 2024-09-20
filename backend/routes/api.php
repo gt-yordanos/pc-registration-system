@@ -3,8 +3,8 @@
 
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PCController;
-use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\PcController;
+use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
