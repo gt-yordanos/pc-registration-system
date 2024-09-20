@@ -106,3 +106,51 @@ To set up the project locally, follow these steps:
 - Node.js and npm
 - Laravel
 - React
+## Backend Setup
+
+1. Navigate to the backend directory:
+
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
+
+   ```bash
+   composer install
+   ```
+3. Copy the example environment file and configure it:
+   ```bash
+   cp .env.example .env
+   ```
+4. Generate an application key:
+
+   ```bash
+   php artisan key:generate
+   ```
+5. Run database migrations:
+
+   ```bash
+   php artisan migrate
+   ```
+6. Start the development server:
+
+   ```bash
+   php artisan serve
+   ```
+## Frontend Setup
+
+1. Navigate to the frontend directory:
+
+   ```bash
+   cd ../frontend
+   ```
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
