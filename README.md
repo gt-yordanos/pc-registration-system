@@ -1,12 +1,13 @@
 # PC Registration System
 
-This repository contains the PC Registration System developed for university students. The system aims to register students' PCs for secure usage within the university premises and to monitor when PCs are taken out of the university. This project was developed during our internship program at **Kuraz Tech**, and we want to extend our heartfelt gratitude to the entire Kuraz Tech team for their support and guidance throughout the development process.
+This repository contains the **PC Registration System** developed for university students. The system aims to register students' PCs for secure usage within the university premises and to monitor when PCs are taken out of the university. This project was developed during our internship program at **Kuraz Tech**, and we want to extend our heartfelt gratitude to the entire Kuraz Tech team for their support and guidance throughout the development process.
 
 ## About Kuraz Tech
 
 Kuraz Tech provided us with an invaluable opportunity to work on this project, offering mentorship, resources, and a collaborative environment that greatly contributed to our learning and development. We are grateful for their dedication to nurturing young talent and supporting our growth as software developers.
 
 ## Table of Contents
+
 - [System Overview](#system-overview)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
@@ -16,16 +17,14 @@ Kuraz Tech provided us with an invaluable opportunity to work on this project, o
 
 ## System Overview
 
-The PC Registration System is designed to:
+The **PC Registration System** is designed to:
 
 - Register students' PCs when they are brought into the university.
 - Generate a QR code for each registered PC.
 - Allow admins to scan the QR code when a PC is taken out of the university to ensure proper authorization.
-  
-### User Roles:
-
-- **Super Admin**: Manages all students and admins via a web application.
-- **Admin**: Registers students' PCs and scans QR codes using a mobile app.
+- Include two types of users:
+  - **Super Admin**: Manages all students and admins via a web application.
+  - **Admin**: Registers students' PCs and scans QR codes using a mobile app.
 
 ## Features
 
@@ -40,17 +39,59 @@ The PC Registration System is designed to:
 - **Backend**: PHP (Laravel)
 - **Frontend**: JavaScript (React, Tailwind CSS)
 - **Mobile App**: [Specify technology, e.g., React Native or Flutter]
-
+  
 ### Languages:
+- PHP: 45.7%
+- JavaScript: 20.8%
+- C++: 11.6%
+- CMake: 9.5%
+- Blade: 9.5%
+- Swift: 0.8%
+- Other: 2.1%
 
-- **PHP**: 45.7%
-- **JavaScript**: 20.8%
-- **C++**: 11.6%
-- **CMake**: 9.5%
-- **Blade**: 9.5%
-- **Swift**: 0.8%
-- **Other**: 2.1%
 ## Folder Structure
 
 The project has a well-organized folder structure separating the backend, frontend, and mobile app components:
 
+```lua
+pc-registration-system/
+├── backend/
+│   ├── app/
+│   ├── bootstrap/
+│   ├── config/
+│   ├── database/
+│   ├── lang/
+│   ├── public/
+│   ├── resources/
+│   ├── routes/
+│   ├── storage/
+│   ├── tests/
+│   ├── .env.example
+│   ├── artisan
+│   ├── composer.json
+│   ├── composer.lock
+│   ├── package.json
+│   ├── phpunit.xml
+│   ├── README.md
+│   └── vite.config.js
+├── frontend/
+│   ├── dist/
+│   ├── public/
+│   ├── src/
+│   ├── .gitignore
+│   ├── README.md
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── tailwind.config.js
+│   └── vite.config.js
+├── mobile/
+│   ├── [Mobile app folders and files]
+│   ├── README.md
+│   └── [Additional configuration files]
+├── node_modules/
+├── README.md
+├── package-lock.json
+└── package.json
+```
