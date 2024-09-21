@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa'; // Imported icons
 
 const Students = () => {
-  const [status, setStatus] = useState(true); // State for toggle switch
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
   const [students, setStudents] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null); // Index of the row being edited
@@ -22,14 +21,10 @@ const Students = () => {
     setSearchTerm(event.target.value);
   };
 
-  const toggleStatus = () => {
-    setStatus(!status); // Toggle between true (Inside) and false (Outside)
-  };
-
   const handleAddRow = () => {
     setStudents([
       ...students,
-      { name: '', id: '', serial: '', brand: '', color: '' } // Add an empty row
+      { name: '', id: '', serial: '', brand: '', color: '', status: true } // Added status for each student
     ]);
     setEditingIndex(students.length); // Set the new row as the one being edited
   };
@@ -38,6 +33,12 @@ const Students = () => {
     const { name, value } = event.target;
     const updatedStudents = [...students];
     updatedStudents[index] = { ...updatedStudents[index], [name]: value };
+    setStudents(updatedStudents);
+  };
+
+  const handleStatusToggle = (index) => {
+    const updatedStudents = [...students];
+    updatedStudents[index].status = !updatedStudents[index].status; // Toggle the specific student's status
     setStudents(updatedStudents);
   };
 
@@ -155,18 +156,18 @@ const Students = () => {
                     </td>
                     <td className="p-2 flex items-center justify-center"> {/* Center align and fixed width */}
                       <div className="flex items-center space-x-2">
-                        <span className="text-sm">{status ? 'Inside' : 'Outside'}</span>
+                        <span className="text-sm">{student.status ? 'Inside' : 'Outside'}</span>
                         <label className="flex items-center cursor-pointer relative">
                           <input
                             type="checkbox"
                             className="appearance-none w-8 h-4 bg-gray-300 rounded-full relative cursor-pointer"
-                            checked={status}
-                            onChange={toggleStatus}
+                            checked={student.status}
+                            onChange={() => handleStatusToggle(index)} // Toggle status for the specific row
                             disabled={index !== editingIndex} // Only allow status toggle during edit
                           />
                           <span
                             className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
-                              status ? 'translate-x-4 bg-green-500' : 'translate-x-0 bg-red-500'
+                              student.status ? 'translate-x-4 bg-green-500' : 'translate-x-0 bg-red-500'
                             }`}
                           />
                         </label>
