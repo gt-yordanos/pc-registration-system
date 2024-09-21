@@ -24,9 +24,12 @@ class SignupRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'phoneNumber' => 'required|string|max:20',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:super_admin,admin,student',
+            'profile_picture' => 'nullable|image|max:1024',
         ];
     }
 }

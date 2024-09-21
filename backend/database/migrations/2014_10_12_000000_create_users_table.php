@@ -10,11 +10,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->string('username')->unique();
+            $table->string('username');
             $table->string('password');
             $table->enum('role', ['super_admin', 'admin', 'student']);
-            $table->string('email')->unique()->nullable();
-            $table->string('profile_picture');
+            $table->string('email')->unique();
+            $table->string('profile_picture')->nullable();
             $table->string('phoneNumber')->nullable();
             $table->timestamps(); // Adds created_at and updated_at columns
             
