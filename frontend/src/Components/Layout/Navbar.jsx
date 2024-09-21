@@ -10,12 +10,17 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [username, setUsername] = useState('');
+  const [profilePic, setProfilePic] = useState('');
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
+    const storedProfilePic = localStorage.getItem('profilePic');
     if (storedUsername) {
       setUsername(storedUsername);
       setIsLoggedIn(true);
+    }
+    if (storedProfilePic) {
+      setProfilePic(storedProfilePic);
     }
   }, []);
 
@@ -29,11 +34,11 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('username'); // Clear username from local storage
+    localStorage.removeItem('profilePic'); // Clear profile picture from local storage
     setIsLoggedIn(false);
     setDropdownOpen(false);
     window.location.href = '/login'; // Redirect to login after logout
   };
-  
 
   return (
     <div className='bg-[#000F1F] w-screen h-[13%] border-b-4 border-[#00AED9] flex items-center justify-between px-4'>
@@ -57,12 +62,21 @@ const Navbar = () => {
 
       <div className='relative flex items-center'>
         <div className='bg-[#2a89a9] w-12 h-12 rounded-full flex items-center justify-center cursor-pointer'>
-          <img 
-            src={ProfileIcon} 
-            className='w-10' 
-            alt="Profile Icon" 
-            onClick={handleLoginLogout}
-          />
+          {profilePic ? (
+            <img 
+              src={profilePic} 
+              className='w-10 rounded-full' 
+              alt="Profile" 
+              onClick={handleLoginLogout}
+            />
+          ) : (
+            <img 
+              src={ProfileIcon} 
+              className='w-10' 
+              alt="Profile Icon" 
+              onClick={handleLoginLogout}
+            />
+          )}
         </div>
 
         {isLoggedIn ? (

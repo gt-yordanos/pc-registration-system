@@ -4,10 +4,9 @@ import { SidebarProvider } from './Contexts/SidebarContext';
 import MainLayout from './Components/Layout/MainLayout';
 import Dashboard from './Pages/Dashboard';
 import Settings from './Pages/Settings';
-import Students from './Pages/Students';
-import Admins from './Pages/Admins';
+import Students from './pages/Students';
+import Admins from './pages/Admins';
 import Login from './pages/login'; 
-import Signup from './pages/Signup';
 import PrivateRoute from './Components/privateRoute'; // Import the PrivateRoute
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
 
           {/* All other routes use the MainLayout */}
           <Route path="/" element={<MainLayout />}>
