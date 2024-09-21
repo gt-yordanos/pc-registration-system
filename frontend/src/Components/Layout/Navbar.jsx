@@ -28,12 +28,12 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-  localStorage.removeItem('username'); // Clear username from local storage
-  setIsLoggedIn(false);
-  setDropdownOpen(false);
-  window.location.href = '/login'; // Redirect to login after logout
-};
-
+    localStorage.removeItem('username'); // Clear username from local storage
+    setIsLoggedIn(false);
+    setDropdownOpen(false);
+    window.location.href = '/login'; // Redirect to login after logout
+  };
+  
 
   return (
     <div className='bg-[#000F1F] w-screen h-[13%] border-b-4 border-[#00AED9] flex items-center justify-between px-4'>

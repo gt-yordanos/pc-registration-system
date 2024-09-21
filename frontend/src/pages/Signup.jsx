@@ -40,7 +40,7 @@ const Signup = () => {
     };
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/signup', formData);
+      const response = await axios.post('http://127.0.0.1:8000/api/admins', formData);
       alert(response.data.message); // Show success message
       navigate('/login'); // Navigate to login page after successful signup
     } catch (err) {
