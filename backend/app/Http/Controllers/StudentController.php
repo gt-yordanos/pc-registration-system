@@ -18,6 +18,7 @@ class StudentController extends Controller
             'student_id' => 'required|string|unique:students',
             'student_name' => 'required|string',
             'phoneNumber' => 'nullable|string',
+            'email' => 'required|email|unique:students,email',
             'pc_brand' => 'required|string',
             'serial_number' => 'required|string|unique:pcs',
             'pc_color' => 'required|string',
@@ -35,6 +36,7 @@ class StudentController extends Controller
             'student_id' => $request->student_id,
             'student_name' => $request->student_name,
             'phoneNumber' => $request->phoneNumber,
+            'email' => $request->email,
             'serial_number' => $request->serial_number,
             'pc_color' => $request->pc_color,
             'pc_brand' => $request->pc_brand,
@@ -106,13 +108,14 @@ class StudentController extends Controller
     // Update student information
     public function update(Request $request, $id)
     {
-        // Validate request input
-        $validator = Validator::make($request->all(), [
-            'student_name' => 'nullable|string',
+         // Validate request input
+         $validator = Validator::make($request->all(), [
+            'student_name' => 'required|string',
             'phoneNumber' => 'nullable|string',
-            'pc_brand' => 'nullable|string',
-            'serial_number' => 'nullable|string',
-            'pc_color' => 'nullable|string',
+            'email' => 'email|unique:students,email,' . $id,
+            'serial_number' => 'required|string|unique:pcs,serial_number,' . $id,
+            'pc_brand' => 'required|string',
+            'pc_color' => 'required|string',
         ]);
 
         // Check for validation errors

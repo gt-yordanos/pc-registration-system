@@ -15,6 +15,7 @@ class Student extends Model
         'student_id',
         'student_name',
         'phoneNumber',
+        'email',
         'pc_brand',
         'serial_number',
         'pc_color',
