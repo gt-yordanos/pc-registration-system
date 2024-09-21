@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa'; // Imported icons
+import React, { useState, useEffect } from 'react'; 
+import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
 
 const Students = () => {
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
-  const [editingIndex, setEditingIndex] = useState(null); // Index of the row being edited
+  const [editingIndex, setEditingIndex] = useState(null);
 
   useEffect(() => {
-    // Load students from local storage on component mount
     const savedStudents = JSON.parse(localStorage.getItem('students')) || [];
     setStudents(savedStudents);
   }, []);
 
   useEffect(() => {
-    // Save students to local storage whenever students state changes
     localStorage.setItem('students', JSON.stringify(students));
   }, [students]);
 
@@ -22,11 +20,8 @@ const Students = () => {
   };
 
   const handleAddRow = () => {
-    setStudents([
-      ...students,
-      { name: '', id: '', serial: '', brand: '', color: '', status: true } // Added status for each student
-    ]);
-    setEditingIndex(students.length); // Set the new row as the one being edited
+    setStudents([...students, { name: '', id: '', serial: '', brand: '', color: '', status: true }]);
+    setEditingIndex(students.length);
   };
 
   const handleInputChange = (event, index) => {
@@ -38,37 +33,32 @@ const Students = () => {
 
   const handleStatusToggle = (index) => {
     const updatedStudents = [...students];
-    updatedStudents[index].status = !updatedStudents[index].status; // Toggle the specific student's status
+    updatedStudents[index].status = !updatedStudents[index].status;
     setStudents(updatedStudents);
   };
 
   const handleSave = (index) => {
     const student = students[index];
-    // Check if all fields are filled
     if (!student.name || !student.id || !student.serial || !student.brand || !student.color) {
       alert('Please fill out all fields before saving.');
       return;
     }
-    setEditingIndex(null); // Stop editing after saving
+    setEditingIndex(null);
   };
 
   const handleEdit = (index) => {
-    setEditingIndex(index); // Set the row to be edited
+    setEditingIndex(index);
   };
 
   return (
     <div className="bg-[#001F3D] min-h-screen p-4">
-      {/* Container for search box and person icon */}
       <div className="flex items-center justify-end mb-8 space-x-2">
-        {/* Person icon */}
         <FaUserPlus 
           className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300" 
           title="Add New" 
           aria-label="Add New Student"
-          onClick={handleAddRow} // Add a new row when clicked
+          onClick={handleAddRow}
         />
-
-        {/* Search box container */}
         <div className="relative flex items-center bg-[#001F3D] rounded-lg border border-blue-500">
           <input
             type="text"
@@ -81,20 +71,19 @@ const Students = () => {
         </div>
       </div>
 
-      {/* Larger container for the table */}
       <div className="bg-[#001F3D] p-6 rounded-lg shadow-lg relative">
         <div className="overflow-x-auto">
-          <div className="shadow-2xl p-2 rounded-lg"> {/* Added shadow effect and padding here */}
+          <div className="shadow-2xl p-2 rounded-lg">
             <table className="min-w-full text-left bg-[#001F3D] text-gray-400 border-collapse">
               <thead>
                 <tr className="border-b border-blue-500">
-                  <th className="p-3 border-b border-blue-500">#</th> {/* Row number */}
+                  <th className="p-3 border-b border-blue-500">#</th>
                   <th className="p-3 border-b border-blue-500">Name</th>
                   <th className="p-3 border-b border-blue-500">ID Number</th>
                   <th className="p-3 border-b border-blue-500">PC Serial Number</th>
                   <th className="p-3 border-b border-blue-500">PC Brand</th>
                   <th className="p-3 border-b border-blue-500">PC Color</th>
-                  <th className="p-3 border-b border-blue-500 w-32">Status</th> {/* Fixed width for status column */}
+                  <th className="p-3 border-b border-blue-500 w-32">Status</th>
                   <th className="p-3 border-b border-blue-500">Action</th>
                 </tr>
               </thead>
@@ -103,7 +92,7 @@ const Students = () => {
                   .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
                   .map((student, index) => (
                   <tr key={index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
-                    <td className="p-2">{index + 1}</td> {/* Row number */}
+                    <td className="p-2">{index + 1}</td>
                     <td className="p-2">
                       <input
                         type="text"
@@ -154,7 +143,7 @@ const Students = () => {
                         disabled={index !== editingIndex}
                       />
                     </td>
-                    <td className="p-2 flex items-center justify-center"> {/* Center align and fixed width */}
+                    <td className="p-2 flex items-center justify-center">
                       <div className="flex items-center space-x-2">
                         <span className="text-sm">{student.status ? 'Inside' : 'Outside'}</span>
                         <label className="flex items-center cursor-pointer relative">
@@ -162,8 +151,8 @@ const Students = () => {
                             type="checkbox"
                             className="appearance-none w-8 h-4 bg-gray-300 rounded-full relative cursor-pointer"
                             checked={student.status}
-                            onChange={() => handleStatusToggle(index)} // Toggle status for the specific row
-                            disabled={index !== editingIndex} // Only allow status toggle during edit
+                            onChange={() => handleStatusToggle(index)}
+                            disabled={index !== editingIndex}
                           />
                           <span
                             className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
@@ -177,8 +166,8 @@ const Students = () => {
                       <div className="flex items-center space-x-2 justify-center">
                         {index === editingIndex ? (
                           <button
-                          className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-600 transition duration-300"
-                          onClick={() => handleSave(index)}
+                            className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-600 transition duration-300"
+                            onClick={() => handleSave(index)}
                           >
                             Save
                           </button>
