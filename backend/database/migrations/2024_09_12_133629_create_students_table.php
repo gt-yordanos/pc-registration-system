@@ -8,10 +8,13 @@ class CreateStudentsTable extends Migration
 {
     public function up()
     {
+         //no need to define the primary key because it's id
+         
         Schema::create('students', function (Blueprint $table) {
-            $table->id('id');
+            $table->id();// auto incrementing id column
             $table->string('student_id')->unique(); 
-            $table->string('student_name');            
+            $table->string('student_name');  
+            $table->string('email')->unique();          
             $table->string('phoneNumber')->nullable();
             $table->string('pc_brand');
             $table->string('serial_number')->unique();
