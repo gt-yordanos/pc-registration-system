@@ -66,9 +66,6 @@ const Login = () => {
           </button>
         </div>
         {error && <p className="text-red-500 mt-2">{error}</p>}
-        <div className='text-left text-[#CCFFFF]'>
-          Don't have an account? <a href='/signup' className="text-blue-500">Signup</a>
-        </div>
       </form>
     </div>
   );

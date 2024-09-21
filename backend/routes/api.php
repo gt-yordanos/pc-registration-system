@@ -46,10 +46,11 @@ Route::group(['prefix' => 'api'], function () {
     // Admin routes
     Route::post('/admin/login', [AdminController::class, 'login']);
     Route::get('/admins', [AdminController::class, 'index']);
+    Route::get('/admins/search', [AdminController::class, 'search']);
     Route::get('/admins/{id}', [AdminController::class, 'show']);
-    Route::post('/admins', [AdminController::class, 'store']);
+    Route::post('/admins/register', [AdminController::class, 'store']);
     Route::put('/admins/{id}', [AdminController::class, 'update']);
-    Route::delete('/admins/{id}', [AdminController::class, 'delete']);
+    Route::delete('/admins/{id}', [AdminController::class, 'destroy']);
 
     // PC routes
     Route::get('/pcs', [PCController::class, 'index']);
