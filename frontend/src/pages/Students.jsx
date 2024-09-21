@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa'; // Imported icons
+import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
+import axios from 'axios'; // Import axios
 
 const Students = () => {
-  const [status, setStatus] = useState(true); // State for toggle switch
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [status, setStatus] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
-  const [editingIndex, setEditingIndex] = useState(null); // Index of the row being edited
+  const [editingIndex, setEditingIndex] = useState(null);
 
+  // Fetch students from the API on component mount
   useEffect(() => {
-    // Load students from local storage on component mount
-    const savedStudents = JSON.parse(localStorage.getItem('students')) || [];
-    setStudents(savedStudents);
+    axios.get('http://127.0.0.1:8000/api/students')
+      .then((response) => {
+        console.log('Students:', response.data); // Log response
+        setStudents(response.data); // Assuming response contains the list of students
+      })
+      .catch((error) => {
+        console.error('Error fetching students:', error);
+      });
   }, []);
-
-  useEffect(() => {
-    // Save students to local storage whenever students state changes
-    localStorage.setItem('students', JSON.stringify(students));
-  }, [students]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const toggleStatus = () => {
-    setStatus(!status); // Toggle between true (Inside) and false (Outside)
+    setStatus(!status);
   };
 
   const handleAddRow = () => {
-    setStudents([
-      ...students,
-      { name: '', id: '', serial: '', brand: '', color: '' } // Add an empty row
-    ]);
-    setEditingIndex(students.length); // Set the new row as the one being edited
+    setStudents([...students, { name: '', id: '', serial: '', brand: '', color: '' }]);
+    setEditingIndex(students.length);
   };
 
   const handleInputChange = (event, index) => {
@@ -43,31 +42,43 @@ const Students = () => {
 
   const handleSave = (index) => {
     const student = students[index];
-    // Check if all fields are filled
     if (!student.name || !student.id || !student.serial || !student.brand || !student.color) {
       alert('Please fill out all fields before saving.');
       return;
     }
-    setEditingIndex(null); // Stop editing after saving
+    const formData = {
+      student_id: student.id,
+      serial_number: student.serial,
+      pc_brand: student.brand,
+      pc_color: student.color,
+      student_name: student.name,
+      phoneNumber: student.phoneNumber,
+    };
+
+    axios.post('http://127.0.0.1:8000/api/students/register', formData)
+      .then((response) => {
+        console.log('Student created:', response.data);
+        setStudents([...students, response.data]); // Add the new student to the state
+        setEditingIndex(null); // Stop editing after saving
+      })
+      .catch((error) => {
+        console.error('Error creating student:', error);
+      });
   };
 
   const handleEdit = (index) => {
-    setEditingIndex(index); // Set the row to be edited
+    setEditingIndex(index);
   };
 
   return (
     <div className="bg-[#001F3D] min-h-screen p-4">
-      {/* Container for search box and person icon */}
       <div className="flex items-center justify-end mb-8 space-x-2">
-        {/* Person icon */}
-        <FaUserPlus 
-          className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300" 
-          title="Add New" 
+        <FaUserPlus
+          className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300"
+          title="Add New"
           aria-label="Add New Student"
-          onClick={handleAddRow} // Add a new row when clicked
+          onClick={handleAddRow}
         />
-
-        {/* Search box container */}
         <div className="relative flex items-center bg-[#001F3D] rounded-lg border border-blue-500">
           <input
             type="text"
@@ -80,124 +91,138 @@ const Students = () => {
         </div>
       </div>
 
-      {/* Larger container for the table */}
       <div className="bg-[#001F3D] p-6 rounded-lg shadow-lg relative">
         <div className="overflow-x-auto">
-          <div className="shadow-2xl p-2 rounded-lg"> {/* Added shadow effect and padding here */}
+          <div className="shadow-2xl p-2 rounded-lg">
             <table className="min-w-full text-left bg-[#001F3D] text-gray-400 border-collapse">
               <thead>
                 <tr className="border-b border-blue-500">
-                  <th className="p-3 border-b border-blue-500">#</th> {/* Row number */}
+                  <th className="p-3 border-b border-blue-500">#</th>
                   <th className="p-3 border-b border-blue-500">Name</th>
                   <th className="p-3 border-b border-blue-500">ID Number</th>
                   <th className="p-3 border-b border-blue-500">PC Serial Number</th>
                   <th className="p-3 border-b border-blue-500">PC Brand</th>
                   <th className="p-3 border-b border-blue-500">PC Color</th>
-                  <th className="p-3 border-b border-blue-500 w-32">Status</th> {/* Fixed width for status column */}
+                  <th className="p-3 border-b border-blue-500">Phone NO</th>
+                  <th className="p-3 border-b border-blue-500 w-32">Status</th>
                   <th className="p-3 border-b border-blue-500">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {students
-                  .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                  .map((student, index) => (
-                  <tr key={index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
-                    <td className="p-2">{index + 1}</td> {/* Row number */}
-                    <td className="p-2">
-                      <input
-                        type="text"
-                        name="name"
-                        value={student.name}
-                        onChange={(event) => handleInputChange(event, index)}
-                        className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                        disabled={index !== editingIndex}
-                      />
-                    </td>
-                    <td className="p-2">
-                      <input
-                        type="text"
-                        name="id"
-                        value={student.id}
-                        onChange={(event) => handleInputChange(event, index)}
-                        className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                        disabled={index !== editingIndex}
-                      />
-                    </td>
-                    <td className="p-2">
-                      <input
-                        type="text"
-                        name="serial"
-                        value={student.serial}
-                        onChange={(event) => handleInputChange(event, index)}
-                        className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                        disabled={index !== editingIndex}
-                      />
-                    </td>
-                    <td className="p-2">
-                      <input
-                        type="text"
-                        name="brand"
-                        value={student.brand}
-                        onChange={(event) => handleInputChange(event, index)}
-                        className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                        disabled={index !== editingIndex}
-                      />
-                    </td>
-                    <td className="p-2">
-                      <input
-                        type="text"
-                        name="color"
-                        value={student.color}
-                        onChange={(event) => handleInputChange(event, index)}
-                        className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                        disabled={index !== editingIndex}
-                      />
-                    </td>
-                    <td className="p-2 flex items-center justify-center"> {/* Center align and fixed width */}
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm">{status ? 'Inside' : 'Outside'}</span>
-                        <label className="flex items-center cursor-pointer relative">
-                          <input
-                            type="checkbox"
-                            className="appearance-none w-8 h-4 bg-gray-300 rounded-full relative cursor-pointer"
-                            checked={status}
-                            onChange={toggleStatus}
-                            disabled={index !== editingIndex} // Only allow status toggle during edit
-                          />
-                          <span
-                            className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
-                              status ? 'translate-x-4 bg-green-500' : 'translate-x-0 bg-red-500'
-                            }`}
-                          />
-                        </label>
-                      </div>
-                    </td>
-                    <td className="p-2">
-                      <div className="flex items-center space-x-2 justify-center">
-                        {index === editingIndex ? (
-                          <button
-                          className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-600 transition duration-300"
-                          onClick={() => handleSave(index)}
-                          >
-                            Save
-                          </button>
-                        ) : (
-                          <FaEdit
-                            className="text-blue-600 cursor-pointer hover:text-blue-400 transition duration-300"
-                            onClick={() => handleEdit(index)}
-                          />
-                        )}
-                        <FaTrash
-                          className="text-red-600 cursor-pointer hover:text-red-400 transition duration-300"
-                          onClick={() => {
-                            const updatedStudents = students.filter((_, i) => i !== index);
-                            setStudents(updatedStudents);
-                          }}
-                        />
-                      </div>
-                    </td>
+                {students.length === 0 ? (
+                  <tr>
+                    <td colSpan="9" className="text-center">No students found.</td>
                   </tr>
-                ))}
+                ) : (
+                  students
+                    .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map((student, index) => (
+                      <tr key={student.id || index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
+                        <td className="p-2">{index + 1}</td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="name"
+                            value={student.name}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="id"
+                            value={student.id}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="serial"
+                            value={student.serial}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="brand"
+                            value={student.brand}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="color"
+                            value={student.color}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="number"
+                            name="phoneNumber"
+                            value={student.phoneNumber}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2 flex items-center justify-center">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm">{status ? 'Inside' : 'Outside'}</span>
+                            <label className="flex items-center cursor-pointer relative">
+                              <input
+                                type="checkbox"
+                                className="appearance-none w-8 h-4 bg-gray-300 rounded-full relative cursor-pointer"
+                                checked={status}
+                                onChange={toggleStatus}
+                                disabled={index !== editingIndex}
+                              />
+                              <span
+                                className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${status ? 'translate-x-4 bg-green-500' : 'translate-x-0 bg-red-500'}`}
+                              />
+                            </label>
+                          </div>
+                        </td>
+                        <td className="p-2">
+                          <div className="flex items-center space-x-2 justify-center">
+                            {index === editingIndex ? (
+                              <button
+                                className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-600 transition duration-300"
+                                onClick={() => handleSave(index)}
+                              >
+                                Save
+                              </button>
+                            ) : (
+                              <FaEdit
+                                className="text-blue-600 cursor-pointer hover:text-blue-400 transition duration-300"
+                                onClick={() => handleEdit(index)}
+                              />
+                            )}
+                            <FaTrash
+                              className="text-red-600 cursor-pointer hover:text-red-400 transition duration-300"
+                              onClick={() => {
+                                const updatedStudents = students.filter((_, i) => i !== index);
+                                setStudents(updatedStudents);
+                              }}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                )}
               </tbody>
             </table>
           </div>

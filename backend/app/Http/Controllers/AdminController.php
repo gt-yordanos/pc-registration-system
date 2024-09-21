@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,9 +16,7 @@ class AdminController extends Controller
             'password' => 'required|string',
         ]);
 
-        $admin = User::where('username', $request->username)
-                     ->where('role', 'admin')
-                     ->first();
+        $admin = Admin::where('username', $request->username)->first();
 
         if ($admin && Hash::check($request->password, $admin->password)) {
             return response()->json(['admin' => $admin], 200);
@@ -30,13 +28,13 @@ class AdminController extends Controller
     // Retrieve all admins
     public function index()
     {
-        return response()->json(User::where('role', 'admin')->get());
+        return response()->json(Admin::all());
     }
 
     // Retrieve a single admin by ID
     public function show($id)
     {
-        $admin = User::where('role', 'admin')->findOrFail($id);
+        $admin = Admin::findOrFail($id);
         return response()->json($admin);
     }
 
@@ -44,14 +42,14 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|unique:users',
+            'username' => 'required|string|unique:admins',
             'password' => 'required|string|min:6',
-            'email' => 'nullable|email|unique:users',
+            'email' => 'nullable|email|unique:admins',
             'profile_picture' => 'nullable|string',
             'phoneNumber' => 'nullable|string',
         ]);
 
-        $admin = User::create([
+        $admin = Admin::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => 'admin',
@@ -66,12 +64,12 @@ class AdminController extends Controller
     // Update an existing admin
     public function update(Request $request, $id)
     {
-        $admin = User::where('role', 'admin')->findOrFail($id);
+        $admin = Admin::findOrFail($id);
 
         $request->validate([
-            'username' => 'sometimes|required|string|unique:users,username,' . $admin->id,
+            'username' => 'sometimes|required|string|unique:admins,username,' . $admin->admin_id,
             'password' => 'sometimes|string|min:6',
-            'email' => 'nullable|email|unique:users,email,' . $admin->id,
+            'email' => 'nullable|email|unique:admins,email,' . $admin->admin_id,
             'profile_picture' => 'nullable|string',
             'phoneNumber' => 'nullable|string',
         ]);
@@ -88,7 +86,7 @@ class AdminController extends Controller
     // Delete an admin
     public function delete($id)
     {
-        $admin = User::where('role', 'admin')->findOrFail($id);
+        $admin = Admin::findOrFail($id);
         $admin->delete();
         return response()->json(null, 204);
     }

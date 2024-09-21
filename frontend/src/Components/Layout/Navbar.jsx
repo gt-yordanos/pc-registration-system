@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSidebar } from '../../Contexts/SidebarContext';
 import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
@@ -7,30 +7,36 @@ import menuIcon from '../../assets/bx-menu.svg';
 
 const Navbar = () => {
   const { sideBarStatus, toggleSidebar } = useSidebar(); 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State for toggling dropdown
-  const [username, setUsername] = useState('John Doe'); // Example username, this would normally come from authentication
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleLoginLogout = () => {
     if (isLoggedIn) {
-      // Toggle dropdown to show logout option if logged in
       setDropdownOpen(!dropdownOpen);
     } else {
-      // Redirect to login if not logged in
       window.location.href = '/login';
     }
   };
 
   const handleLogout = () => {
-    // Logic for logging out (e.g., clearing tokens)
+    localStorage.removeItem('username'); // Clear username from local storage
     setIsLoggedIn(false);
-    setDropdownOpen(false); // Close the dropdown after logout
-    console.log("Logged out");
+    setDropdownOpen(false);
+    window.location.href = '/login'; // Redirect to login after logout
   };
+  
 
   return (
     <div className='bg-[#000F1F] w-screen h-[13%] border-b-4 border-[#00AED9] flex items-center justify-between px-4'>
-      
       <div className='flex items-center gap-10 sm:gap-0'>
         <div className="bg-white h-10 w-10 flex items-center justify-center cursor-pointer rounded-full sm:hidden">
           <img
@@ -59,7 +65,6 @@ const Navbar = () => {
           />
         </div>
 
-        {/* Conditionally show username or login */}
         {isLoggedIn ? (
           <div className='ml-3 cursor-pointer text-white' onClick={handleLoginLogout}>
             {username}
@@ -70,14 +75,12 @@ const Navbar = () => {
           </div>
         )}
 
-        {/* Dropdown for Logout */}
         {dropdownOpen && isLoggedIn && (
           <div className="absolute top-12 right-0 bg-white text-black rounded-md shadow-lg p-2">
             <button onClick={handleLogout} className="w-full text-left p-2 hover:bg-gray-200">Logout</button>
           </div>
         )}
       </div>
-
     </div>
   );
 };

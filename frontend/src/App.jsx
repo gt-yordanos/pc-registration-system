@@ -6,8 +6,9 @@ import Dashboard from './Pages/Dashboard';
 import Settings from './Pages/Settings';
 import Students from './Pages/Students';
 import Admins from './Pages/Admins';
-import Login from './Pages/Login'; 
+import Login from './pages/login'; 
 import Signup from './pages/Signup';
+import PrivateRoute from './Components/privateRoute'; // Import the PrivateRoute
 
 function App() {
   return (
@@ -19,10 +20,38 @@ function App() {
 
           {/* All other routes use the MainLayout */}
           <Route path="/" element={<MainLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="students" element={<Students />} />
-            <Route path="admins" element={<Admins />} />
-            <Route path="settings" element={<Settings />} />
+            <Route 
+              path="dashboard" 
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="students" 
+              element={
+                <PrivateRoute>
+                  <Students />
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="admins" 
+              element={
+                <PrivateRoute>
+                  <Admins />
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="settings" 
+              element={
+                <PrivateRoute>
+                  <Settings />
+                </PrivateRoute>
+              } 
+            />
           </Route>
         </Routes>
       </Router>

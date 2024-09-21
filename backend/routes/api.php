@@ -4,7 +4,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PCController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\StudentController;
@@ -35,16 +34,11 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/signup', [AuthController::class, 'signup']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-    // User routes
-    Route::post('/users', [UserController::class, 'store']);
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'delete']);
     
     // Student routes
     Route::post('/students/register', [StudentController::class, 'register']);
     Route::get('/students/{id}', [StudentController::class, 'show']);
+    Route::get('/students', [StudentController::class, 'showAll']);
     Route::put('/students/{id}', [StudentController::class, 'update']);
     Route::delete('/students/{id}', [StudentController::class, 'delete']);
 

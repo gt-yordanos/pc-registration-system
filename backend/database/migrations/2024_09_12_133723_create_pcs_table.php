@@ -11,7 +11,7 @@ class CreatePcsTable extends Migration
         Schema::create('pcs', function (Blueprint $table) {
             $table->id('pc_id');
             $table->string('serial_number')->unique();
-            $table->foreignId('owner_id')->constrained('students', 'student_id')->onDelete('cascade');
+            $table->foreignId('owner_id')->referenced('students', 'student_id')->onDelete('cascade'); // Ensure this points to the correct column
             $table->string('pc_brand');
             $table->string('pc_color');
             $table->timestamps();

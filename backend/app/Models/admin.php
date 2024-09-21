@@ -12,13 +12,13 @@ class Admin extends Model
     protected $primaryKey = 'admin_id';
 
     protected $fillable = [
-        'user_id',
-        'managed_students', // This is a JSON field
+        'username',
+        'password',
+        'role', // 'super_admin'or 'admin'
+        'email',
+        'profile_picture',
+        'phoneNumber',
     ];
-
-     // Relationship: An admin belongs to a user
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+    protected $hidden = ['password'];
+    
 }

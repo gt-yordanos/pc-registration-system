@@ -10,8 +10,12 @@ class CreateAdminsTable extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id('admin_id');
-            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
-            $table->json('managed_students')->nullable();
+            $table->string('username');
+            $table->string('password');
+            $table->enum('role', ['super_admin', 'admin']);
+            $table->string('email')->unique()->nullable();
+            $table->string('profile_picture')->nullable();
+            $table->string('phoneNumber')->nullable();
             $table->timestamps();
         });
     }
@@ -21,3 +25,4 @@ class CreateAdminsTable extends Migration
         Schema::dropIfExists('admins');
     }
 }
+

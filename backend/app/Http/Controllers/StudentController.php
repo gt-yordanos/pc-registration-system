@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\PC;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -15,51 +15,66 @@ class StudentController extends Controller
     {
         // Validate request input
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,user_id',
-            'serial_number' => 'required|string|unique:pcs',
+            'student_id' => 'required|string|unique:students',
+            'student_name' => 'required|string',
+            'phoneNumber' => 'nullable|string',
             'pc_brand' => 'required|string',
+            'serial_number' => 'required|string|unique:pcs',
             'pc_color' => 'required|string',
         ]);
-
+        
         // Check for validation errors
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
+        
+        // Create student entry
+        $student = Student::create([
+            'student_id' => $request->student_id,
+            'student_name' => $request->student_name,
+            'phoneNumber' => $request->phoneNumber,
+            'pc_brand' => $request->pc_brand,
+            'serial_number' => $request->serial_number,
+            'pc_color' => $request->pc_color,
+        ]);
+        
+
+        
+        
         // Create PC entry
         $pc = PC::create([
             'serial_number' => $request->serial_number,
             'pc_brand' => $request->pc_brand,
             'pc_color' => $request->pc_color,
-            'owner_id' => $request->user_id,
+            'owner_id' => $request->student_id,
         ]);
-
-        // Create student entry
-        $student = Student::create([
-            'user_id' => $request->user_id,
-            'pc_id' => $pc->pc_id,
-        ]);
-
-        // Generate QR code (for simplicity, we use the serial number as the code)
+        
+        // Generate QR code
         $qrCode = $this->generateQRCode($pc->serial_number);
-
-        // Send QR code via email
-        Mail::to($request->user()->email)->send(new QrCodeEmail($qrCode));
-
+        
+        // Placeholder for sending QR code
+        // Mail::to($request->email)->send(new QrCodeEmail($qrCode));
+        
         return response()->json(['message' => 'Student registered successfully', 'student' => $student], 201);
     }
-
+    
     // Generate a QR code (dummy implementation)
     private function generateQRCode($data)
     {
-        // This is where you'd generate a QR code.
         return $data; // Placeholder
+    }
+    
+    // Retrieve all student information
+    public function showAll()
+    {
+        return response()->json(Student::all());
     }
 
     // Show student information
     public function show($id)
     {
-        $student = Student::with('user', 'pc')->findOrFail($id);
+        $student = Student::with('pc')->findOrFail($id);
         return response()->json($student);
     }
 
@@ -78,8 +93,13 @@ class StudentController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        // Find and update student
-        $student = Student::findOrFail($id);
+        // Find student
+        $student = Student::find($id);
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        // Update PC if serial number is provided
         if ($request->has('serial_number')) {
             $student->pc->update([
                 'serial_number' => $request->serial_number,
@@ -92,19 +112,17 @@ class StudentController extends Controller
     }
 
     // Delete a student
-public function delete($id)
-{
-    // Find and delete student
-    $student = Student::findOrFail($id);
-    $student->pc->delete(); // Delete associated PC
-    $student->delete(); // Delete student record
+    public function delete($id)
+    {
+        // Find and delete student
+        $student = Student::find($id);
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
 
-    return response()->json(['message' => 'Student deleted successfully'], 200);
+        $student->pc()->delete(); // Delete associated PC
+        $student->delete(); // Delete student record
+
+        return response()->json(['message' => 'Student deleted successfully'], 200);
+    }
 }
-}
-
-
-
-
-
-
