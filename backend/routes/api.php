@@ -39,6 +39,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/students/register', [StudentController::class, 'register']);
     Route::get('/students/{id}', [StudentController::class, 'show']);
     Route::get('/students', [StudentController::class, 'showAll']);
+    Route::get('/students/search', [StudentController::class, 'index']);
     Route::put('/students/{id}', [StudentController::class, 'update']);
     Route::delete('/students/{id}', [StudentController::class, 'delete']);
 

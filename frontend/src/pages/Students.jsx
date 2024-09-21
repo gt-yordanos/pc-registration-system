@@ -7,13 +7,16 @@ const Students = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [creatingNew, setCreatingNew] = useState(false);
+  const [editId, setEditId] = useState(null); 
+
 
   // Fetch students from the API on component mount
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/students')
       .then((response) => {
-        console.log('Students:', response.data); // Log response
-        setStudents(response.data); // Assuming response contains the list of students
+        console.log('Students:', response.data); 
+        setStudents(response.data); 
       })
       .catch((error) => {
         console.error('Error fetching students:', error);
@@ -21,16 +24,49 @@ const Students = () => {
   }, []);
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    const value = event.target.value;
+    setSearchTerm(value);
+    fetchStudents(value); 
   };
+
+  const handleDelete = (index) => {
+    console.log(index);
+    const studentId = students[index].student_id;
+    console.log(studentId);
+    axios.delete(`http://127.0.0.1:8000/api/students/${studentId}`)
+      .then(() => {
+        const updatedStudents = students.filter((_, i) => i !== index);
+        setStudents(updatedStudents);
+      })
+      .catch((error) => {
+        console.error('Error deleting student:', error);
+      });
+  };
+
+  // Fetch students from the API on component mount
+  const fetchStudents = (search = "") => {
+    axios.get(`http://127.0.0.1:8000/api/students/search?search=${search}`)
+      .then((response) => {
+        console.log('Students:', response.data);
+        setStudents(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching students:', error);
+      });
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   const toggleStatus = () => {
     setStatus(!status);
   };
 
   const handleAddRow = () => {
-    setStudents([...students, { name: '', id: '', serial: '', brand: '', color: '' }]);
+    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '' }]);
     setEditingIndex(students.length);
+    setCreatingNew(true);
   };
 
   const handleInputChange = (event, index) => {
@@ -42,34 +78,60 @@ const Students = () => {
 
   const handleSave = (index) => {
     const student = students[index];
-    if (!student.name || !student.id || !student.serial || !student.brand || !student.color) {
+    if (!student.student_name || !student.student_id || !student.serial_number || !student.pc_brand || !student.pc_color) {
       alert('Please fill out all fields before saving.');
       return;
     }
+
     const formData = {
-      student_id: student.id,
-      serial_number: student.serial,
-      pc_brand: student.brand,
-      pc_color: student.color,
-      student_name: student.name,
+      student_id: student.student_id,
+      serial_number: student.serial_number,
+      pc_brand: student.pc_brand,
+      pc_color: student.pc_color,
+      student_name: student.student_name,
       phoneNumber: student.phoneNumber,
     };
 
-    axios.post('http://127.0.0.1:8000/api/students/register', formData)
-      .then((response) => {
-        console.log('Student created:', response.data);
-        setStudents([...students, response.data]); // Add the new student to the state
-        setEditingIndex(null); // Stop editing after saving
-      })
-      .catch((error) => {
-        console.error('Error creating student:', error);
-      });
+
+    if (creatingNew) {
+      // Create new student
+      axios.post('http://127.0.0.1:8000/api/students/register', formData)
+        .then((response) => {
+          const updatedStudents = [...students.slice(0, index), response.data, ...students.slice(index + 1)];
+          setStudents(updatedStudents);
+          setEditingIndex(null);
+          setCreatingNew(false);
+        })
+        .catch((error) => {
+          console.error('Error creating student:', error);
+        });
+    } else {
+      // Update existing student
+      axios.put(`http://127.0.0.1:8000/api/students/${editId}`, formData)
+        .then((response) => {
+          const updatedStudents = students.map((s, i) => (i === index ? response.data : s));
+          setStudents(updatedStudents);
+          setEditingIndex(null);
+        })
+        .catch((error) => {
+          console.error('Error updating student:', error);
+        });
+    }
   };
+
+
+  
 
   const handleEdit = (index) => {
     setEditingIndex(index);
-  };
+    const editId = students[index].student_id; // Get the student ID
+    setEditId(editId); // Set the edit ID in state
+    console.log(editId); // Log the ID to confirm
+    setCreatingNew(false); // Indicate you are not creating a new entry
+};
 
+
+  console.log(students);
   return (
     <div className="bg-[#001F3D] min-h-screen p-4">
       <div className="flex items-center justify-end mb-8 space-x-2">
@@ -115,15 +177,25 @@ const Students = () => {
                   </tr>
                 ) : (
                   students
-                    .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .filter(student => student.student_name.toLowerCase().includes(searchTerm.toLowerCase()))
                     .map((student, index) => (
                       <tr key={student.id || index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
                         <td className="p-2">{index + 1}</td>
                         <td className="p-2">
                           <input
                             type="text"
-                            name="name"
-                            value={student.name}
+                            name="student_name"
+                            value={student.student_name}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text" // Change this from "number" to "text"
+                            name="student_id"
+                            value={student.student_id}
                             onChange={(event) => handleInputChange(event, index)}
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
@@ -132,8 +204,8 @@ const Students = () => {
                         <td className="p-2">
                           <input
                             type="text"
-                            name="id"
-                            value={student.id}
+                            name="serial_number"
+                            value={student.serial_number}
                             onChange={(event) => handleInputChange(event, index)}
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
@@ -142,8 +214,8 @@ const Students = () => {
                         <td className="p-2">
                           <input
                             type="text"
-                            name="serial"
-                            value={student.serial}
+                            name="pc_brand"
+                            value={student.pc_brand}
                             onChange={(event) => handleInputChange(event, index)}
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
@@ -152,18 +224,8 @@ const Students = () => {
                         <td className="p-2">
                           <input
                             type="text"
-                            name="brand"
-                            value={student.brand}
-                            onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                            disabled={index !== editingIndex}
-                          />
-                        </td>
-                        <td className="p-2">
-                          <input
-                            type="text"
-                            name="color"
-                            value={student.color}
+                            name="pc_color"
+                            value={student.pc_color}
                             onChange={(event) => handleInputChange(event, index)}
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
@@ -216,6 +278,8 @@ const Students = () => {
                               onClick={() => {
                                 const updatedStudents = students.filter((_, i) => i !== index);
                                 setStudents(updatedStudents);
+                                console.log(index);
+                                handleDelete(index);
                               }}
                             />
                           </div>

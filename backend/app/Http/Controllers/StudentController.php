@@ -28,26 +28,27 @@ class StudentController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        
+        \Log::info('This is a test log message');
+
         // Create student entry
         $student = Student::create([
             'student_id' => $request->student_id,
             'student_name' => $request->student_name,
             'phoneNumber' => $request->phoneNumber,
-            'pc_brand' => $request->pc_brand,
             'serial_number' => $request->serial_number,
             'pc_color' => $request->pc_color,
+            'pc_brand' => $request->pc_brand,
         ]);
-        
+    $d = $student->id;
+    // Log the created student details
+    \Log::info('Student created: ', ['student' => $student]);
 
-        
-        
         // Create PC entry
         $pc = PC::create([
             'serial_number' => $request->serial_number,
             'pc_brand' => $request->pc_brand,
             'pc_color' => $request->pc_color,
-            'owner_id' => $request->student_id,
+            'owner_id' => $d,
         ]);
         
         // Generate QR code
@@ -58,7 +59,31 @@ class StudentController extends Controller
         
         return response()->json(['message' => 'Student registered successfully', 'student' => $student], 201);
     }
-    
+
+
+    //search
+    public function index(Request $request)
+    {
+        $searchTerm = $request->get('search', '');
+
+        // Query students based on the search term across multiple columns
+        $students = Student::where('student_name', 'like', "%{$searchTerm}%")
+            ->orWhere('student_id', 'like', "%{$searchTerm}%")
+            ->orWhere('phoneNumber', 'like', "%{$searchTerm}%")
+            ->orWhere('serial_number', 'like', "%{$searchTerm}%")
+            ->orWhereHas('pc', function ($query) use ($searchTerm) {
+                $query->where('pc_color', 'like', "%{$searchTerm}%")
+                      ->orWhere('pc_brand', 'like', "%{$searchTerm}%");
+            })
+            ->get();
+
+        if ($students->isEmpty()) {
+            Log::info('No students found for search term: ' . $searchTerm);
+        }
+
+        return response()->json($students);
+    }
+
     // Generate a QR code (dummy implementation)
     private function generateQRCode($data)
     {
@@ -83,9 +108,11 @@ class StudentController extends Controller
     {
         // Validate request input
         $validator = Validator::make($request->all(), [
-            'serial_number' => 'sometimes|required|string|unique:pcs,serial_number,' . $id,
-            'pc_brand' => 'sometimes|required|string',
-            'pc_color' => 'sometimes|required|string',
+            'student_name' => 'nullable|string',
+            'phoneNumber' => 'nullable|string',
+            'pc_brand' => 'nullable|string',
+            'serial_number' => 'nullable|string',
+            'pc_color' => 'nullable|string',
         ]);
 
         // Check for validation errors
@@ -93,19 +120,21 @@ class StudentController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        // Find student
+        // Find the student by ID
         $student = Student::find($id);
         if (!$student) {
             return response()->json(['message' => 'Student not found'], 404);
         }
 
-        // Update PC if serial number is provided
-        if ($request->has('serial_number')) {
-            $student->pc->update([
-                'serial_number' => $request->serial_number,
-                'pc_brand' => $request->pc_brand,
-                'pc_color' => $request->pc_color,
-            ]);
+        // Update student details
+        $student->update($request->only(['student_name', 'phoneNumber']));
+
+        // Update associated PC details if provided
+        if ($request->has('serial_number') || $request->has('pc_brand') || $request->has('pc_color')) {
+            $pc = $student->pc; // Assuming a relation named 'pc' exists
+            if ($pc) {
+                $pc->update($request->only(['serial_number', 'pc_brand', 'pc_color']));
+            }
         }
 
         return response()->json(['message' => 'Student updated successfully', 'student' => $student], 200);
@@ -114,8 +143,9 @@ class StudentController extends Controller
     // Delete a student
     public function delete($id)
     {
+        $student_id = $id;
         // Find and delete student
-        $student = Student::find($id);
+        $student = Student::find($student_id);
         if (!$student) {
             return response()->json(['message' => 'Student not found'], 404);
         }
