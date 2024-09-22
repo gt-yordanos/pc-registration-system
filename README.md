@@ -13,6 +13,7 @@ Kuraz Tech provided us with an invaluable opportunity to work on this project, o
 - [Technologies Used](#technologies-used)
 - [Folder Structure](#folder-structure)
 - [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
 - [Acknowledgments](#acknowledgments)
 
 ## System Overview
