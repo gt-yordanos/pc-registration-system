@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useSidebar } from '../../Contexts/SidebarContext';
 import { useLogin } from '../../Contexts/LoginContext';
 import { useMobileMenu } from '../../Contexts/MobileMenuContext'; // Import MobileMenu context
 import { BiMenu, BiX } from 'react-icons/bi';
 import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
 import ProfileCard from './ProfileCard';
+import ThemeToggler from './ThemeToggler'; // Import the ThemeToggler
 
 const Navbar = () => {
   const { user, logout } = useLogin();
@@ -38,7 +38,12 @@ const Navbar = () => {
       </div>
 
       {/* Profile icon and Popup */}
-      <div className='relative flex items-center gap-5'>
+      <div className='relative flex items-center gap-10'>
+
+      <div className='hidden sm:flex justify-center items-center'>
+        <ThemeToggler />
+      </div>
+
         <div className='w-8 h-8 sm:w-12 sm:h-12 bg-[#CCFFFF] flex items-center justify-center rounded-full'>
           <img
             src={ProfileIcon}

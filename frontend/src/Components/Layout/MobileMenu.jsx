@@ -6,8 +6,7 @@ import dashboardIcon from '../../assets/bxs-dashboard.svg';
 import studentsIcon from '../../assets/student-person-part-2-svgrepo-com.svg';
 import adminsIcon from '../../assets/manager-avatar-svgrepo-com.svg';
 import settingsIcon from '../../assets/bxs-cog.svg';
-import { BiX } from 'react-icons/bi'; // Import close icon
-
+import ThemeToggler from './ThemeToggler';
 const MobileMenu = () => {
   const { selectedItem, handleItemSelect } = useSidebar();
   const { isMobileMenuVisible, toggleMobileMenu } = useMobileMenu();
@@ -28,6 +27,10 @@ const MobileMenu = () => {
     isMobileMenuVisible && ( // Only render if mobile menu is visible
       <div className='absolute top-8 inset-0 flex flex-col justify-center  items-center bg-[#000F1F] z-50 w-[75%] h-[80%] mx-auto my-auto sm:hidden border-2 border-[#00AED9] rounded-lg'>
         <ul className='flex flex-col  space-y-1'>
+          <div className='flex justify-center'>
+            <ThemeToggler />
+          </div>
+       
           {['dashboard', 'students', 'admins', 'settings'].map((item) => (
             <li key={item} className=''>
               <Link

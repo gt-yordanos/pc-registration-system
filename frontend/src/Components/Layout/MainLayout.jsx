@@ -27,18 +27,21 @@ function MainLayout() {
 
   return (
     <div className="flex flex-col h-screen w-screen">
+      {/* Only render Navbar when not on login/signup pages */}
       {!isLoginPage && <Navbar />}
       <div className={`flex h-[87%] w-screen transition-all duration-300`}>
         {!isLoginPage && (
           <>
+            {/* Sidebar for desktop view */}
             {!isMobileView && <Sidebar />}
             <div className={`flex-1`}>
+              {/* Main content section */}
               <ContentSection selectedItem={selectedItem} isSidebarVisible={!isLoginPage && isSidebarVisible} />
             </div>
           </>
         )}
 
-        {/* Show MobileMenu only if sidebar is hidden and on mobile view */}
+        {/* Show MobileMenu only on mobile view and when not on login/signup pages */}
         {!isLoginPage && isMobileView && (
           <MobileMenu />
         )}

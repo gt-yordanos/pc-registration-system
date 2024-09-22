@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   return (
     <div className={`bg-[#001F3D] h-[99%] ml-2 mr-2 rounded-lg transition-all duration-300 
-      hidden sm:block ${isCollapsed ? 'w-20' : 'w-44'} flex-none`}
+      hidden sm:block ${isCollapsed ? 'w-20' : 'w-48'} flex-none`}
     >
       {/* Sidebar links */}
       <div className={`flex items-center p-4  ${isCollapsed ? 'justify-center' :  'justify-between'}`}>

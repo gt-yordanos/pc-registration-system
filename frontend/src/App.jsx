@@ -18,6 +18,7 @@ function App() {
         <MobileMenuProvider> {/* Wrap in MobileMenuProvider */}
           <Router>
             <Routes>
+              {/* Login and Signup routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
 

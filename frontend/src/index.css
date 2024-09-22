@@ -1,9 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 body{
   background:  #000F1F;
+  font-family: "Poppins", sans-serif;
 }
