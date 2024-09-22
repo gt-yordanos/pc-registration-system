@@ -81,7 +81,7 @@ const Admins = () => {
           <div className="shadow-2xl p-2 rounded-lg">
             <table className="min-w-full text-left bg-[#001F3D] text-gray-400 border-collapse">
               <thead>
-                <tr className="border-b border-blue-500">
+                <tr className="border-b border-blue-500 md:font-bold font-light lg:text-[15px] md:text-[12px] text-[10px]">
                   <th className="p-3 border-b border-blue-500">#</th> {/* Row number */}
                   <th className="p-3 border-b border-blue-500">Name</th>
                   <th className="p-3 border-b border-blue-500">ID Number</th>

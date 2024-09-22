@@ -37,10 +37,10 @@ function MainLayout() {
               {!isMobileView && <Sidebar />}
             </div>
            
-            <div className={`w-full`}>
+      
               {/* Main content section */}
               <ContentSection selectedItem={selectedItem}  />
-            </div>
+          
           </>
         )}
 
