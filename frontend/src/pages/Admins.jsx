@@ -52,6 +52,7 @@ const Admins = () => {
 
   const handleInputChange = (event, index) => {
     const { name, value } = event.target;
+  
     const updatedAdmins = [...admins];
     updatedAdmins[index] = { ...updatedAdmins[index], [name]: value };
     setAdmins(updatedAdmins);
@@ -197,7 +198,8 @@ const Admins = () => {
                             name="admin_id"
                             value={admin.admin_id} // Controlled input
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                           
+                             disabled={index !== editingIndex} // Make this editable based on index
+                            onChange={(event) => handleInputChange(event, index)} // Added onChange
                           />
                         </td>
                         <td className="p-2">
