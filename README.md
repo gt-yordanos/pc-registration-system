@@ -219,7 +219,123 @@ This document provides details about the API endpoints available in the applicat
 
 - **POST** `/api/qrcodes/generate`
 - **POST** `/api/qrcodes/scan`
-- 
+## 1. Authentication
+
+### POST `/api/login`
+
+**Description:**  
+Authenticates a user and returns a token.
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+**Response:**
+```json
+{
+  "message": "User created successfully."
+}
+```
+### POST `/api/signup`
+
+**Description:**  
+Registers a new user.
+
+**Request Body:**
+```json
+{
+  "name": "User Name",
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+**Response:**
+```json
+{
+  "message": "User created successfully."
+}
+```
+### POST `/api/logout`
+
+**Description:**  
+Logs out the authenticated user.
+
+**Middleware:**  
+Requires authentication (auth:sanctum).
+
+**Response:**
+```json
+{
+  "message": "Logged out successfully."
+}
+```
+### POST `/api/users`
+
+**Description:**  
+Creates a new user.
+
+**Request Body:**
+```json
+{
+  "name": "User Name",
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+### GET `/api/users`
+
+**Description:**  
+Retrieves a list of all users.
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "User Name",
+    "email": "user@example.com"
+  }
+]
+```
+### GET `/api/users/{id}`
+
+**Description:**  
+Retrieves a specific user by ID.
+
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "User Name",
+  "email": "user@example.com"
+}
+```
+### PUT `/api/users/{id}`
+
+**Description:**  
+Updates a user's information.
+
+**Request Body:**
+```json
+{
+  "name": "Updated Name",
+  "email": "updated@example.com"
+}
+```
+### DELETE `/api/users/{id}`
+
+**Description:**  
+Deletes a user by ID.
+
+**Response:**
+```json
+{
+  "message": "User deleted successfully."
+}
+```
 ## Acknowledgments
 
 We would like to express our sincere gratitude to **Kuraz Tech** for their unwavering support and guidance throughout this project.
