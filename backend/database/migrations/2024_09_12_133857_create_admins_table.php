@@ -8,21 +8,22 @@ class CreateAdminsTable extends Migration
 {
     public function up()
     {
+        // Create the admins table
         Schema::create('admins', function (Blueprint $table) {
-            $table->id('admin_id');
-            $table->string('username');
-            $table->string('password');
+            $table->id(); 
+            $table->string('admin_id')->unique(); 
+            $table->string('username'); 
+            $table->string('password'); 
             $table->enum('role', ['super_admin', 'admin']);
-            $table->string('email')->unique()->nullable();
-            $table->string('profile_picture')->nullable();
-            $table->string('phoneNumber')->nullable();
-            $table->timestamps();
+            $table->string('email')->unique()->nullable(); 
+            $table->string('profile_picture')->nullable(); 
+            $table->string('phoneNumber'); 
+            $table->timestamps(); 
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('admins'); // Drop the table if it exists
     }
 }
-
