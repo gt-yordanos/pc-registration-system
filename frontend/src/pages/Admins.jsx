@@ -197,7 +197,7 @@ const Admins = () => {
                             name="admin_id"
                             value={admin.admin_id} // Controlled input
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                            disabled // Keep this field always disabled
+                           
                           />
                         </td>
                         <td className="p-2">
