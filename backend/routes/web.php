@@ -20,5 +20,5 @@ Route::get('/signup', function () {
 });
 
 // Route to handle signup form submission
-Route::post('/signup', [AuthController::class, 'signup']); // Adjust according to your AuthController
+//Route::post('/signup', [AuthController::class, 'signup']); // Adjust according to your AuthController
 
