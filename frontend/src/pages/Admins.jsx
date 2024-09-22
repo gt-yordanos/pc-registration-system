@@ -45,8 +45,7 @@ const Admins = () => {
   };
 
   const handleAddRow = () => {
-    const newAdminId = uuidv4();
-    setAdmins([...admins, { username: '', admin_id: newAdminId, phoneNumber: '', email: '', password: '', profile_picture: '' }]);
+    setAdmins([...admins, { username: '', admin_id: '', phoneNumber: '', email: '', password: '', profile_picture: '' }]);
     setEditingIndex(admins.length);
     setCreatingNew(true);
   };
