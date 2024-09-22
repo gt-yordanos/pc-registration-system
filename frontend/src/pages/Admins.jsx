@@ -52,6 +52,7 @@ const Admins = () => {
 
   return (
     <div className="bg-[#001F3D] min-h-screen p-4">
+      {/* Container for search box and add icon */}
       <div className="flex items-center justify-end mb-8 space-x-2">
         <FaUserPlus 
           className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300" 

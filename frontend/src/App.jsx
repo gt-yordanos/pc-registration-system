@@ -13,7 +13,7 @@ import Signup from './Pages/Signup';
 
 function App() {
   return (
-    <LoginProvider>
+      <LoginProvider>
       <SidebarProvider>
         <MobileMenuProvider> {/* Wrap in MobileMenuProvider */}
           <Router>
@@ -34,6 +34,7 @@ function App() {
         </MobileMenuProvider>
       </SidebarProvider>
     </LoginProvider>
+    
   );
 }
 
