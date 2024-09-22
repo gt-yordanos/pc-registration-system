@@ -554,6 +554,41 @@ Updates a PC's information.
   "specifications": "Updated PC Specifications"
 }
 ```
+### DELETE `/api/pcs/{id}`
+
+**Description:**  
+Deletes a PC by ID.
+
+**Response:**
+```json
+{
+  "message": "PC deleted successfully."
+}
+```
+## QR Code Management
+
+### POST `/api/qrcodes/generate`
+
+**Description:**  
+Generates a QR code.
+
+**Request Body:**
+```json
+{
+  "data": "Data to encode in QR code"
+}
+```
+### POST `/api/qrcodes/scan`
+
+**Description:**  
+Scans a QR code and retrieves the encoded data.
+
+**Request Body:**
+```json
+{
+  "qrCodeImage": "base64-encoded-image-data"
+}
+```
 ## Acknowledgments
 
 We would like to express our sincere gratitude to **Kuraz Tech** for their unwavering support and guidance throughout this project.
