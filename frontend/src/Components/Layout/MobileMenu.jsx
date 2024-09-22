@@ -25,9 +25,9 @@ const MobileMenu = () => {
 
   return (
     isMobileMenuVisible && ( // Only render if mobile menu is visible
-      <div className='absolute top-8 inset-0 flex flex-col justify-center  items-center bg-[#000F1F] z-50 w-[75%] h-[80%] mx-auto my-auto sm:hidden border-2 border-[#00AED9] rounded-lg'>
+      <div className='absolute top-8 inset-0 flex flex-col justify-center  items-center bg-[#000F1F] z-50 w-[80%] h-[70%] mx-auto my-auto sm:hidden border-2 border-[#00AED9] rounded-lg'>
         <ul className='flex flex-col  space-y-1'>
-          <div className='flex justify-center'>
+          <div className='flex justify-center mb-3'>
             <ThemeToggler />
           </div>
        
