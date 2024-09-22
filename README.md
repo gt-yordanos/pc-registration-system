@@ -336,6 +336,224 @@ Deletes a user by ID.
   "message": "User deleted successfully."
 }
 ```
+### POST `/api/students/register`
+
+**Description:**  
+Registers a new student.
+
+**Request Body:**
+```json
+{
+  "name": "Student Name",
+  "email": "student@example.com",
+  "course": "Course Name"
+}
+```
+### GET `/api/students/{id}`
+
+**Description:**  
+Retrieves a specific student by ID.
+
+### PUT `/api/students/{id}`
+
+**Description:**  
+Updates a student's information.
+
+**Request Body:**
+```json
+{
+  "name": "Updated Student Name",
+  "email": "updated.student@example.com",
+  "course": "Updated Course Name"
+}
+```
+### DELETE `/api/students/{id}`
+**Description:**
+Deletes a student by ID.
+## 4. Admin Management
+
+### POST `/api/admin/login`
+
+**Description:**  
+Authenticates an admin user and returns a token.
+
+**Request Body:**
+```json
+{
+  "email": "admin@example.com",
+  "password": "yourpassword"
+}
+```
+### GET `/api/admins`
+
+**Description:**  
+Retrieves a list of all admins.
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Admin Name",
+    "email": "admin@example.com"
+  }
+]
+```
+### GET `/api/admins`
+
+**Description:**  
+Retrieves a list of all admins.
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Admin Name",
+    "email": "admin@example.com"
+  }
+]
+```
+### GET `/api/admins/{id}`
+
+**Description:**  
+Retrieves a specific admin by ID.
+
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "Admin Name",
+  "email": "admin@example.com"
+}
+```
+### POST `/api/admins`
+
+**Description:**  
+Creates a new admin.
+
+**Request Body:**
+```json
+{
+  "name": "New Admin Name",
+  "email": "new.admin@example.com",
+  "password": "yourpassword"
+}
+```
+### PUT `/api/admins/{id}`
+
+**Description:**  
+Updates an admin's information.
+
+**Request Body:**
+```json
+{
+  "name": "Updated Admin Name",
+  "email": "updated.admin@example.com"
+}
+```
+### PUT `/api/admins/{id}`
+
+**Description:**  
+Updates an admin's information.
+
+**Request Body:**
+```json
+{
+  "name": "Updated Admin Name",
+  "email": "updated.admin@example.com"
+}
+```
+### DELETE `/api/admins/{id}`
+
+**Description:**  
+Deletes an admin by ID.
+
+**Response:**
+```json
+{
+  "message": "Admin deleted successfully."
+}
+```
+## 5. PC Management
+
+### GET `/api/pcs`
+
+**Description:**  
+Retrieves a list of all PCs.
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "PC Name",
+    "specifications": "PC Specifications"
+  }
+]
+```
+### GET `/api/pcs/{id}`
+
+**Description:**  
+Retrieves a specific PC by ID.
+
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "PC Name",
+  "specifications": "PC Specifications"
+}
+```
+### POST `/api/pcs`
+
+**Description:**  
+Creates a new PC.
+
+**Request Body:**
+```json
+{
+  "name": "PC Name",
+  "specifications": "PC Specifications"
+}
+```
+### GET `/api/pcs/{id}`
+
+**Description:**  
+Retrieves a specific PC by ID.
+
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "PC Name",
+  "specifications": "PC Specifications"
+}
+```
+### POST `/api/pcs`
+
+**Description:**  
+Creates a new PC.
+
+**Request Body:**
+```json
+{
+  "name": "PC Name",
+  "specifications": "PC Specifications"
+}
+```
+### PUT `/api/pcs/{id}`
+
+**Description:**  
+Updates a PC's information.
+
+**Request Body:**
+```json
+{
+  "name": "Updated PC Name",
+  "specifications": "Updated PC Specifications"
+}
+```
 ## Acknowledgments
 
 We would like to express our sincere gratitude to **Kuraz Tech** for their unwavering support and guidance throughout this project.
