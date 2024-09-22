@@ -15,41 +15,21 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-
-          {/* All other routes use the MainLayout */}
-          <Route path="/" element={<MainLayout />}>
-            <Route 
-              path="dashboard" 
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              } 
-            />
-            <Route 
-              path="students" 
-              element={
-                <PrivateRoute>
-                  <Students />
-                </PrivateRoute>
-              } 
-            />
-            <Route 
-              path="admins" 
-              element={
-                <PrivateRoute>
-                  <Admins />
-                </PrivateRoute>
-              } 
-            />
-            <Route 
-              path="settings" 
-              element={
-                <PrivateRoute>
-                  <Settings />
-                </PrivateRoute>
-              } 
-            />
+          
+          {/* Protect the MainLayout itself */}
+          <Route 
+            path="/" 
+            element={
+              <PrivateRoute>
+                <MainLayout />
+              </PrivateRoute>
+            }
+          >
+            {/* All nested routes are automatically protected */}
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="students" element={<Students />} />
+            <Route path="admins" element={<Admins />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>
       </Router>

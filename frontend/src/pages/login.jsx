@@ -18,13 +18,19 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/admin/login', { username, password });
-      alert(response.data.message);
+      alert('Login successful!'); // You can adjust this alert as needed
       localStorage.setItem('username', response.data.admin.username); // Store username in local storage
       navigate('/'); // Navigate after successful login
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      // Check if the error response has a message
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || 'Login failed');
+      } else {
+        setError('Login failed'); // Fallback error message
+      }
     }
   };
+  
   
 
   return (

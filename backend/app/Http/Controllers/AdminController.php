@@ -19,9 +19,12 @@ class AdminController extends Controller
         $admin = Admin::where('username', $request->username)->first();
 
         if ($admin && Hash::check($request->password, $admin->password)) {
+            if ($admin->role !== 'super_admin') {
+                return response()->json(['message' => 'Access denied. Super admin role required.'], 403);
+            }
             return response()->json(['admin' => $admin], 200);
         }
-
+    
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
