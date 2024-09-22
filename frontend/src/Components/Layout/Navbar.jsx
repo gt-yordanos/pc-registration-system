@@ -42,18 +42,18 @@ const Navbar = () => {
         </div>
 
         <div className="flex justify-center items-center gap-3">
-          <div className='bg-[#CCFFFF] w-12 h-12 rounded-xl flex items-center justify-center'>
-            <img src={computerIcon} className='w-8' alt="Computer Icon" />
+          <div className='bg-[#CCFFFF] h-8 w-8 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center'>
+            <img src={computerIcon} className='w-6 sm:w-8' alt="Computer Icon" />
           </div>
-          <h1 className='text-[#CCFFFF] font-bold text-2xl'>PC Registration System</h1>
+          <h1 className='text-[#CCFFFF] font-bold text-lg sm:text-2xl '>PC Registration System</h1>
         </div>
       </div>
 
       <div className='relative flex items-center'>
-        <div className='bg-[#2a89a9] w-12 h-12 rounded-full flex items-center justify-center cursor-pointer'>
+        <div className='bg-[#2a89a9] w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center cursor-pointer'>
           <img 
             src={ProfileIcon} 
-            className='w-10' 
+            className='w-8 sm:w-10' 
             alt="Profile Icon" 
             onClick={handleLoginLogout}
           />
