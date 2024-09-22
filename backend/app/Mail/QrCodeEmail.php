@@ -8,6 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 class QrCodeEmail extends Mailable
 {
@@ -36,10 +38,14 @@ class QrCodeEmail extends Mailable
      * @return $this
      */
     public function build()
-    {
-        return $this
-            ->subject('Your QR Code') // Set the email subject
-            ->view('emails.qr_code') // Specify the view for the email content
-            ->with(['qrCode' => $this->qrCode]); // Pass the QR code to the view
-    }
+{
+    // Generate QR code image URL or base64 data
+    $qrCodeImage = QrCode::format('png')->size(300)->generate($this->qrCode);
+
+    // Pass the generated QR code to the view
+    return $this
+        ->subject('Your QR Code') // Set the email subject
+        ->view('emails.qr_code') // Specify the view for the email content
+        ->with(['qrCode' => $qrCodeImage]); // Pass the generated QR code to the view
+}
 }

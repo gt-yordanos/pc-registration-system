@@ -7,12 +7,25 @@ use App\Models\PC;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\QrCodeEmail;
+use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class StudentController extends Controller
 {
     // Register a new student along with their PC
     public function register(Request $request)
     {
+        $qrCodeContent = $request->serial_number; 
+    $qrCodeImage = QrCode::format('png')->size(300)->generate($qrCodeContent);
+
+    // Send the email with the QR code
+    Mail::to('edenzewdu434@gmail.com')->send(new QrCodeEmail($qrCodeImage));
+        
+        // Placeholder for sending QR code
+        // Mail::to($request->email)->send(new QrCodeEmail($qrCode));
+        
+        return response()->json(['message' => 'Student registered successfully', 'student' => $student], 201);
         // Validate request input
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|string|unique:students',
@@ -52,14 +65,8 @@ class StudentController extends Controller
             'pc_color' => $request->pc_color,
             'owner_id' => $d,
         ]);
+
         
-        // Generate QR code
-        $qrCode = $this->generateQRCode($pc->serial_number);
-        
-        // Placeholder for sending QR code
-        // Mail::to($request->email)->send(new QrCodeEmail($qrCode));
-        
-        return response()->json(['message' => 'Student registered successfully', 'student' => $student], 201);
     }
 
 
