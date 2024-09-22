@@ -170,6 +170,56 @@ To set up the project locally, follow these steps:
 
    [Instructions on how to run the mobile app on an emulator or device.]
 
+# API Documentation
+
+## Overview
+This document provides details about the API endpoints available in the application, including their purpose, request methods, expected parameters, and example usage.
+
+## API Endpoints
+
+### Authentication
+
+- **POST** `/api/login`
+- **POST** `/api/signup`
+- **POST** `/api/logout`
+
+### User Management
+
+- **POST** `/api/users`
+- **GET** `/api/users`
+- **GET** `/api/users/{id}`
+- **PUT** `/api/users/{id}`
+- **DELETE** `/api/users/{id}`
+
+### Student Management
+
+- **POST** `/api/students/register`
+- **GET** `/api/students/{id}`
+- **PUT** `/api/students/{id}`
+- **DELETE** `/api/students/{id}`
+
+### Admin Management
+
+- **POST** `/api/admin/login`
+- **GET** `/api/admins`
+- **GET** `/api/admins/{id}`
+- **POST** `/api/admins`
+- **PUT** `/api/admins/{id}`
+- **DELETE** `/api/admins/{id}`
+
+### PC Management
+
+- **GET** `/api/pcs`
+- **GET** `/api/pcs/{id}`
+- **POST** `/api/pcs`
+- **PUT** `/api/pcs/{id}`
+- **DELETE** `/api/pcs/{id}`
+
+### QR Code Management
+
+- **POST** `/api/qrcodes/generate`
+- **POST** `/api/qrcodes/scan`
+- 
 ## Acknowledgments
 
 We would like to express our sincere gratitude to **Kuraz Tech** for their unwavering support and guidance throughout this project.
