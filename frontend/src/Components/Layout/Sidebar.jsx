@@ -20,8 +20,8 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`h-full bg-[#000F1F] transition-all duration-300 
-        ${sideBarStatus === 'hidden' ? 'w-0' : isCollapsed ? 'w-24 pt-4 border-r-4 border-[#00AED9]' : 'pt-4 w-64 border-r-4 border-[#00AED9]'}`}
+      className={`h-[99%] mx-2 rounded-lg bg-[#001F3D] transition-all duration-300 
+        ${sideBarStatus === 'hidden' ? 'w-0' : isCollapsed ? 'w-24 pt-4 ' : 'pt-4 w-64'}`}
     >
       {/* Minimize/Maximize button */}
       <div className='flex w-full justify-end pr-4 mb-10'>

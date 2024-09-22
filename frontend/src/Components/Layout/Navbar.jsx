@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className='bg-[#000F1F] w-screen h-[13%] border-b-4 border-[#00AED9] flex items-center justify-between px-4'>
+    <div className='bg-[#001F3D] w-[99%] h-[13%] flex items-center justify-between px-4 mb-2 mx-auto mt-2 rounded-lg'>
       
       <div className='flex items-center gap-10 sm:gap-0'>
         <div className="bg-white h-10 w-10 flex items-center justify-center cursor-pointer rounded-full sm:hidden">
