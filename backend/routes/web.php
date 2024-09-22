@@ -13,12 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-// Route to show the signup form
-Route::get('/signup', function () {
-    return view('signup'); // Make sure you have a signup.blade.php in resources/views
+Route::get('/', function () {
+    return view('welcome');
 });
-
-// Route to handle signup form submission
-//Route::post('/signup', [AuthController::class, 'signup']); // Adjust according to your AuthController
-
