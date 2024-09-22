@@ -1,30 +1,47 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import ContentSection from "./ContentSection"; // Import your ContentSection
-import { useSidebar } from "../../Contexts/SidebarContext"; // Correct path
-import { useLocation } from "react-router-dom";
+import MobileMenu from "./MobileMenu";
+import ContentSection from "./ContentSection";
+import { useSidebar } from "../../Contexts/SidebarContext";
 
 function MainLayout() {
-  const { sideBarStatus } = useSidebar(); // Get sidebar status
-  const location = useLocation(); // Get current location
+  const { isSidebarVisible } = useSidebar();
+  const location = useLocation();
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 768);
 
-  // Determine if the current page is login (don't show sidebar for login page)
   const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
+  const selectedItem = location.pathname.split('/').pop() || 'dashboard';
 
-  // Determine selected item based on the current path
-  const selectedItem = location.pathname.split('/').pop() || 'dashboard'; // Default to 'dashboard'
+  const handleResize = () => {
+    setIsMobileView(window.innerWidth < 768);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-screen">
-      {/* Show Navbar only if not on login page */}
       {!isLoginPage && <Navbar />}
-      
-      <div className={`flex h-[87%] w-screen transition-all duration-300 ${isLoginPage ? 'justify-center' : ''}`}>
-        {/* Only show Sidebar if not on login page */}
-        {!isLoginPage && <Sidebar />}
-        <ContentSection selectedItem={selectedItem} isSidebarVisible={sideBarStatus !== 'visible'} />
+      <div className={`flex h-[87%] w-screen transition-all duration-300`}>
+        {!isLoginPage && (
+          <>
+            {!isMobileView && <Sidebar />}
+            <div className={`flex-1`}>
+              <ContentSection selectedItem={selectedItem} isSidebarVisible={!isLoginPage && isSidebarVisible} />
+            </div>
+          </>
+        )}
+
+        {/* Show MobileMenu only if sidebar is hidden and on mobile view */}
+        {!isLoginPage && isMobileView && (
+          <MobileMenu />
+        )}
       </div>
     </div>
   );

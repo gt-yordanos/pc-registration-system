@@ -1,40 +1,44 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 const SidebarContext = createContext();
 
-// Create a provider component
+export const useSidebar = () => {
+  return useContext(SidebarContext);
+};
+
 export const SidebarProvider = ({ children }) => {
-  const [sideBarStatus, setSideBarStatus] = useState('visible');
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selectedItem, setSelectedItem] = useState('dashboard'); // Default selected item
+  const [selectedItem, setSelectedItem] = useState('dashboard');
 
-  // Function to toggle the sidebar visibility
+  // Toggle sidebar visibility (for mobile screens)
   const toggleSidebar = () => {
-    setSideBarStatus(prevStatus => (prevStatus === 'hidden' ? 'visible' : 'hidden'));
+    setIsSidebarVisible(!isSidebarVisible);
   };
 
-  // Function to collapse/expand the sidebar
+  // Toggle sidebar collapse (for larger screens)
   const toggleCollapse = () => {
-    setIsCollapsed(prevState => !prevState);
+    setIsCollapsed(!isCollapsed);
   };
 
-  // Function to set the selected item
+  // Set the selected sidebar item
   const handleItemSelect = (item) => {
     setSelectedItem(item);
+    setIsSidebarVisible(false); // Hide sidebar when an item is selected
   };
 
   return (
-    <SidebarContext.Provider value={{ sideBarStatus, toggleSidebar, isCollapsed, toggleCollapse, selectedItem, handleItemSelect }}>
+    <SidebarContext.Provider
+      value={{
+        isSidebarVisible,
+        toggleSidebar,
+        isCollapsed,
+        toggleCollapse,
+        selectedItem,
+        handleItemSelect,
+      }}
+    >
       {children}
     </SidebarContext.Provider>
   );
-};
-
-// Create a custom hook to use the SidebarContext
-export const useSidebar = () => {
-  const context = useContext(SidebarContext);
-  if (!context) {
-    throw new Error('useSidebar must be used within a SidebarProvider');
-  }
-  return context;
 };
