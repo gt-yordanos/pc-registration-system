@@ -171,6 +171,7 @@ return response()->json($response);
 
     // Prepare the validation rules
     $rules = [
+        'student_id' => 'required|string',
         'student_name' => 'required|string',
         'phoneNumber' => 'nullable|string',
         'email' => 'email|unique:students,email,' . $student->id,
@@ -181,7 +182,7 @@ return response()->json($response);
     // Check if the serial_number is being updated
     if ($request->has('serial_number')) {
         $pc = PC::where('owner_id', $student->id)->first();
-        $rules['serial_number'] = 'required|string|unique:pcs,serial_number,' . ($pc ? $pc->id : 'null');
+        $rules['serial_number'] = 'required|string|unique:pcs,serial_number,' . ($pc ? $pc->pc_id : 'null');
     }
 
     // Validate request input
