@@ -1,31 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa'; // Imported icons
-import Settings from './Settings'; // Import your Settings component
+import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
+import axios from 'axios';
 
 const Students = () => {
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [status, setStatus] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
-  const [editingIndex, setEditingIndex] = useState(null); // Index of the row being edited
-  const [isStatusVisible, setIsStatusVisible] = useState(true); // Manage status column visibility
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [creatingNew, setCreatingNew] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
-    // Load students from local storage on component mount
-    const savedStudents = JSON.parse(localStorage.getItem('students')) || [];
-    setStudents(savedStudents);
+    axios.get('http://127.0.0.1:8000/api/students')
+      .then((response) => {
+        setStudents(response.data);
+        console.log('student:', response.data); 
+      })
+      .catch((error) => {
+        console.error('Error fetching students:', error);
+      });
   }, []);
 
-  useEffect(() => {
-    // Save students to local storage whenever students state changes
-    localStorage.setItem('students', JSON.stringify(students));
-  }, [students]);
-
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    const value = event.target.value;
+    setSearchTerm(value);
+    fetchStudents(value);
+  };
+
+  const handleDelete = (index) => {
+    const studentId = students[index].student_id;
+    axios.delete(`http://127.0.0.1:8000/api/students/${studentId}`)
+      .then(() => {
+        const updatedStudents = students.filter((_, i) => i !== index);
+        setStudents(updatedStudents);
+      })
+      .catch((error) => {
+        console.error('Error deleting student:', error);
+      });
+  };
+
+  const fetchStudents = (search = "") => {
+    axios.get(`http://127.0.0.1:8000/api/students/search?search=${search}`)
+      .then((response) => {
+        setStudents(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching students:', error);
+      });
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const toggleStatus = () => {
+    setStatus(!status);
   };
 
   const handleAddRow = () => {
-    setStudents([...students, { name: '', id: '', serial: '', brand: '', color: '', status: true }]);
-    setEditingIndex(students.length); // Set the new row as the one being edited
+    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '', email: '', status: '' }]);
+    setEditingIndex(students.length);
+    setCreatingNew(true);
   };
 
   const handleInputChange = (event, index) => {
@@ -43,27 +78,62 @@ const Students = () => {
 
   const handleSave = (index) => {
     const student = students[index];
-    // Check if all fields are filled
-    if (!student.name || !student.id || !student.serial || !student.brand || !student.color) {
+    if (!student.student_name || !student.student_id || !student.serial_number || !student.pc_brand || !student.pc_color || !student.email) {
       alert('Please fill out all fields before saving.');
       return;
     }
-    setEditingIndex(null); // Stop editing after saving
+
+    const formData = {
+      student_id: student.student_id,
+      serial_number: student.serial_number,
+      pc_brand: student.pc_brand,
+      pc_color: student.pc_color,
+      student_name: student.student_name,
+      phoneNumber: student.phoneNumber,
+      email: student.email,
+      status: student.status, // Include status in formData
+    };
+
+    if (creatingNew) {
+      axios.post('http://127.0.0.1:8000/api/students/register', formData)
+        .then((response) => {
+          const updatedStudents = [...students.slice(0, index), response.data, ...students.slice(index + 1)];
+          setStudents(updatedStudents);
+          setEditingIndex(null);
+          setCreatingNew(false);
+        })
+        .catch((error) => {
+          console.error('Error creating student:', error);
+        });
+    } else {
+      axios.put(`http://127.0.0.1:8000/api/students/${editId}`, formData)
+        .then(() => {
+          setStudents(prevStudents => prevStudents.map((student, i) =>
+            i === index ? { ...student, ...formData } : student
+          ));
+          setEditingIndex(null);
+        })
+        .catch((error) => {
+          console.error('Error updating student:', error);
+        });
+    }
   };
 
   const handleEdit = (index) => {
-    setEditingIndex(index); // Set the row to be edited
+    setEditingIndex(index);
+    const editId = students[index].student_id;
+    setEditId(editId);
+    setCreatingNew(false);
   };
 
   return (
     <div className="bg-[#001F3D] min-h-screen p-4">
-      {/* Container for search box and buttons */}
       <div className="flex items-center justify-end mb-8 space-x-2">
-        <FaUserPlus 
-          className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300" 
-          title="Add New" 
+        <FaUserPlus
+          className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300"
+          title="Add New"
           aria-label="Add New Student"
-          onClick={handleAddRow} // Add a new row when clicked
+          onClick={handleAddRow}
         />
         <div className="relative flex items-center bg-[#001F3D] rounded-lg border border-blue-500">
           <input
@@ -79,130 +149,144 @@ const Students = () => {
         <Settings setIsStatusVisible={setIsStatusVisible} />
       </div>
 
-      {/* Larger container for the table */}
-      <div className="bg-[#001F3D] lg:p-6 md:p-4 p-2 rounded-lg shadow-lg relative">
+      <div className="bg-[#001F3D] p-6 rounded-lg shadow-lg relative">
         <div className="overflow-x-auto">
+          <div className="shadow-2xl p-2 rounded-lg">
           <div className="shadow-2xl p-2 rounded-lg">
             <table className="min-w-full text-left bg-[#001F3D] text-gray-400 border-collapse">
               <thead>
-                <tr className="border-b border-blue-500 md:font-bold font-light lg:text-[15px] md:text-[12px] text-[10px]">
+                <tr className="border-b border-blue-500">
                   <th className="p-3 border-b border-blue-500">#</th>
                   <th className="p-3 border-b border-blue-500">Name</th>
                   <th className="p-3 border-b border-blue-500">ID Number</th>
                   <th className="p-3 border-b border-blue-500">PC Serial Number</th>
                   <th className="p-3 border-b border-blue-500">PC Brand</th>
                   <th className="p-3 border-b border-blue-500">PC Color</th>
-                  {isStatusVisible && (
-                    <th className="p-3 border-b border-blue-500 w-32">Status</th>
-                  )}
+                  <th className="p-3 border-b border-blue-500">Phone NO</th>
+                  <th className="p-3 border-b border-blue-500">Email</th>
+                  <th className="p-3 border-b border-blue-500">Status</th> {/* New Status Column */}
                   <th className="p-3 border-b border-blue-500">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {students
-                  .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                  .map((student, index) => (
-                    <tr key={index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
-                      <td className="p-2">{index + 1}</td>
-                      <td className="p-2">
-                        <input
-                          type="text"
-                          name="name"
-                          value={student.name}
-                          onChange={(event) => handleInputChange(event, index)}
-                          className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                          disabled={index !== editingIndex}
-                        />
-                      </td>
-                      <td className="p-2">
-                        <input
-                          type="text"
-                          name="id"
-                          value={student.id}
-                          onChange={(event) => handleInputChange(event, index)}
-                          className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                          disabled={index !== editingIndex}
-                        />
-                      </td>
-                      <td className="p-2">
-                        <input
-                          type="text"
-                          name="serial"
-                          value={student.serial}
-                          onChange={(event) => handleInputChange(event, index)}
-                          className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                          disabled={index !== editingIndex}
-                        />
-                      </td>
-                      <td className="p-2">
-                        <input
-                          type="text"
-                          name="brand"
-                          value={student.brand}
-                          onChange={(event) => handleInputChange(event, index)}
-                          className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                          disabled={index !== editingIndex}
-                        />
-                      </td>
-                      <td className="p-2">
-                        <input
-                          type="text"
-                          name="color"
-                          value={student.color}
-                          onChange={(event) => handleInputChange(event, index)}
-                          className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                          disabled={index !== editingIndex}
-                        />
-                      </td>
-                      {isStatusVisible && (
-                        <td className="p-2 flex items-center justify-center">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-sm">{student.status ? 'Inside' : 'Outside'}</span>
-                            <label className="flex items-center cursor-pointer relative">
-                              <input
-                                type="checkbox"
-                                className="appearance-none w-8 h-4 bg-gray-300 rounded-full relative cursor-pointer"
-                                checked={student.status}
-                                onChange={() => handleStatusToggle(index)} // Toggle status for the specific row
-                                disabled={index !== editingIndex} // Only allow status toggle during edit
-                              />
-                              <span
-                                className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${student.status ? 'translate-x-4 bg-green-500' : 'translate-x-0 bg-red-500'}`}
-                              />
-                            </label>
-                          </div>
+                {students.length === 0 ? (
+                  <tr>
+                    <td colSpan="10" className="text-center">No students found.</td>
+                  </tr>
+                ) : (
+                  students
+                    .filter(student => student.student_name.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map((student, index) => (
+                      <tr key={student.id || index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
+                        <td className="p-2">{index + 1}</td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="student_name"
+                            value={student.student_name}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
                         </td>
-                      )}
-                      <td className="p-2">
-                        <div className="flex items-center space-x-2 justify-center">
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="student_id"
+                            value={student.student_id}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="serial_number"
+                            value={student.serial_number}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="pc_brand"
+                            value={student.pc_brand}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="pc_color"
+                            value={student.pc_color}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="text"
+                            name="phoneNumber"
+                            value={student.phoneNumber}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <input
+                            type="email"
+                            name="email"
+                            value={student.email}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
+                        </td>
+                        <td className="p-2">
+                          <select
+                            name="status"
+                            value={student.status}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          >
+                            <option value="in">In</option>
+                            <option value="out">Out</option>
+                          </select>
+                        </td>
+                        <td className="p-2 flex justify-start space-x-2">
                           {index === editingIndex ? (
-                            <button
-                              className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-600 transition duration-300"
-                              onClick={() => handleSave(index)}
-                            >
+                            <button onClick={() => handleSave(index)} className="text-green-300">
                               Save
                             </button>
                           ) : (
                             <FaEdit
-                              className="text-blue-600 cursor-pointer hover:text-blue-400 transition duration-300"
+                              className="text-yellow-300 cursor-pointer hover:text-yellow-400"
                               onClick={() => handleEdit(index)}
                             />
                           )}
                           <FaTrash
-                            className="text-red-600 cursor-pointer hover:text-red-400 transition duration-300"
-                            onClick={() => setStudents(students.filter((_, i) => i !== index))}
+                            className="text-red-300 cursor-pointer hover:text-red-400"
+                            onClick={() => handleDelete(index)}
                           />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    ))
+                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
+    </div>
   );
-};
-
+}
 export default Students;

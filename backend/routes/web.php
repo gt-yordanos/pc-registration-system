@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Mail\QrCodeEmail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-// Route to show the signup form
-Route::get('/signup', function () {
-    return view('signup'); // Make sure you have a signup.blade.php in resources/views
+Route::get('/', function () {
+    return view('welcome');
 });
 
 // Route to handle signup form submission
 Route::post('/signup', [AuthController::class, 'signup']); // Adjust according to your AuthController
 
+
+Route::get('/send-qrcode-email', function () {
+    // Generate a sample QR code content
+    $qrCodeContent = 'Sample PC Information';
+    
+    // Send the email
+    Mail::to('edenzewdu434@gmail.com')->send(new QrCodeEmail($qrCodeContent));
+
+    return 'QR Code email sent!';
+});

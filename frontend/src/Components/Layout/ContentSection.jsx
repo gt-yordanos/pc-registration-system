@@ -3,8 +3,12 @@ import Dashboard from '../../Pages/Dashboard'; // Import your components
 import Students from '../../Pages/Students';
 import Admins from '../../Pages/Admins';
 import Settings from '../../Pages/Settings';
+import { useSidebar } from '../../Contexts/SidebarContext';
 
-const ContentSection = ({ selectedItem, isSidebarVisible }) => {
+
+const ContentSection = ({ selectedItem }) => {
+  const { isCollapsed } = useSidebar();
+
   const renderContent = () => {
     switch (selectedItem) {
       case 'dashboard':
@@ -21,8 +25,9 @@ const ContentSection = ({ selectedItem, isSidebarVisible }) => {
   };
 
   return (
+    
     <div
-      className={`bg-primary w-[99.3%] flex-grow transition-all duration-300  h-[99%] overflow-auto rounded-lg no-scrollbar`}
+      className={`bg-primary flex-grow ml-1.5 mr-1.5 sm:ml-0  transition-all duration-300  h-[99%]  overflow-auto rounded-lg no-scrollbar`}
     >
       {renderContent()}
     </div>

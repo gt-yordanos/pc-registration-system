@@ -5,19 +5,20 @@ const ThemeContext = createContext();
 
 // ThemeContext Provider Component
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  // Retrieve theme from localStorage or default to 'bluesh'
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'bluesh');
 
   useEffect(() => {
+    // Save the theme to localStorage whenever it changes
     localStorage.setItem('theme', theme);
-    document.documentElement.className = theme; // Apply the theme to the document
+
+    // Apply the theme class to the document's root element (HTML tag)
+    document.documentElement.className = theme;
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => 
-      prevTheme === 'light' ? 'dark' : 
-      prevTheme === 'dark' ? 'current' : 
-      'light'
-    );
+  // Toggle between the three themes
+  const toggleTheme = (newTheme) => {
+    setTheme(newTheme);
   };
 
   return (
