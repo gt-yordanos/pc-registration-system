@@ -9,7 +9,6 @@ import Settings from './Pages/Settings';
 import Students from './pages/Students';
 import Admins from './Pages/Admins';
 import Login from './Pages/Login';
-import Signup from './Pages/Signup';
 
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
             <Routes>
               {/* Login and Signup routes */}
               <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
 
               {/* All other routes use the MainLayout */}
               <Route path="/" element={
