@@ -65,56 +65,63 @@ const Admins = () => {
     setAdmins(updatedAdmins);
   };
 
+
+
   const handleSave = (index) => {
     const admin = admins[index];
-    
-
     if (creatingNew) {
-      // Create new admin
-      if (!admin.username || !admin.admin_id || !admin.phoneNumber || !admin.email || !admin.password) {
-        alert('Please fill in all fields before saving.');
-        return;
-      }
-  
-      const formData = new FormData();
-      formData.append('username', admin.username);
-      formData.append('admin_id', admin.admin_id);
-      formData.append('phoneNumber', admin.phoneNumber);
-      formData.append('email', admin.email);
-      formData.append('password', admin.password);
-      formData.append('profile_picture', admin.profile_picture); 
-
-      axios.post('http://127.0.0.1:8000/api/admins/register', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+        // Create new admin
+        if (!admin.username || !admin.admin_id || !admin.phoneNumber || !admin.email || !admin.password) {
+            alert('Please fill in all fields before saving.');
+            return;
         }
-      })
+        
+        const formData = new FormData();
+        formData.append('username', admin.username);
+        formData.append('admin_id', admin.admin_id);
+        formData.append('phoneNumber', admin.phoneNumber);
+        formData.append('email', admin.email);
+        formData.append('password', admin.password);
+        
+        if (admin.profile_picture) {
+            formData.append('profile_picture', admin.profile_picture);
+        }
+
+        console.log([...formData]); // Log FormData entries
+
+        axios.post('http://127.0.0.1:8000/api/admins/register', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
         .then((response) => {
-          const updatedAdmins = [...admins.slice(0, index), response.data, ...admins.slice(index + 1)];
-          setAdmins(updatedAdmins);
-          setEditingIndex(null);
-          setCreatingNew(false);
+            const updatedAdmins = [...admins.slice(0, index), response.data, ...admins.slice(index + 1)];
+            setAdmins(updatedAdmins);
+            setEditingIndex(null);
+            setCreatingNew(false);
         })
         .catch((error) => {
-          console.error('Error creating admin:', error);
+            console.error('Error creating admin:', error.response ? error.response.data : error.message);
+            alert('Failed to create admin: ' + (error.response ? error.response.data.message : error.message));
         });
     } else {
-      // Update existing admin
-      axios.put(`http://127.0.0.1:8000/api/admins/${editId}`, admin, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      
+        // Update existing admin
+        axios.put(`http://127.0.0.1:8000/api/admins/${editId}`, admin, {
+            headers: { 'Content-Type': 'application/json' } // Change content type for JSON
+        })
         .then((response) => {
-          const updatedAdmins = admins.map((admin, i) => (i === index ? response.data : admin));
-          setAdmins(updatedAdmins);
-          setEditingIndex(null);
+            console.log('Admin updated:', response.data); // Log response
+            const updatedAdmins = admins.map((admin, i) => (i === index ? response.data : admin));
+            setAdmins(updatedAdmins);
+            setEditingIndex(null);
         })
         .catch((error) => {
-          console.error('Error updating admin:', error);
+            console.error('Error updating admin:', error);
+            alert('Failed to update admin. Please try again.');
         });
     }
-  };
+};
+
+    
 
   const handleEdit = (index) => {
     setEditingIndex(index);
