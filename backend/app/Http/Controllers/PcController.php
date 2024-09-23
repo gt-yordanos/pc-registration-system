@@ -64,6 +64,30 @@ class PcController extends Controller
         return response()->json($pc);
     }
 
+    public function getChartData()
+{
+    $pcs = PC::all();
+    
+    // Initialize an array for monthly counts
+    $monthlyCounts = array_fill(0, 12, 0);
+
+    foreach ($pcs as $pc) {
+        $month = (int)date('m', strtotime($pc->created_at)) - 1; // Get month index (0-11)
+        $monthlyCounts[$month]++;
+    }
+
+    return response()->json([
+        'barData2' => [
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'datasets' => [[
+                'label' => 'Total PC Registrations of the Year',
+                'data' => $monthlyCounts,
+                'backgroundColor' => '#22C55E',
+            ]],
+        ],
+    ]);
+}
+
     // Delete a PC
     public function delete($id)
     {

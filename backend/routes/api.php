@@ -51,6 +51,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/admins/register', [AdminController::class, 'store']);
     Route::put('/admins/{id}', [AdminController::class, 'update']);
     Route::delete('/admins/{id}', [AdminController::class, 'destroy']);
+    Route::get('/chart-data', [AdminController::class, 'getChartData']);
 
     // PC routes
     Route::get('/pcs', [PcController::class, 'index']);
@@ -58,6 +59,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/pcs', [PcController::class, 'store']);
     Route::put('/pcs/{id}', [PcController::class, 'update']);
     Route::delete('/pcs/{id}', [PcController::class, 'delete']);
+    Route::get('/chart-data', [PCController::class, 'getChartData']);
 
     // QR Code routes
     Route::post('/qrcodes/generate', [QrController::class, 'generate']);
