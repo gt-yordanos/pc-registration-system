@@ -9,16 +9,19 @@ class Admin extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'admin_id';
+    protected $primaryKey = 'admin_id'; // Set admin_id as the primary key
+
+    public $incrementing = false; // Disable auto-incrementing for the primary key
 
     protected $fillable = [
-        'user_id',
-        'managed_students', // This is a JSON field
+        'admin_id',
+        'username',
+        'password',
+        'role', // 'super_admin' or 'admin'
+        'email',
+        'profile_picture',
+        'phoneNumber',
     ];
 
-     // Relationship: An admin belongs to a user
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+    protected $hidden = ['password']; // Hide password when returning admin data
 }

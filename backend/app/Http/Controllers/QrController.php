@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Mail\QrCodeEmail; 
 
-class QRCodeController extends Controller
+class QrController extends Controller
 {
     // Generate a QR code for a given PC
     public function generate(Request $request)

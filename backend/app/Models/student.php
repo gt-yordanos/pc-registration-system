@@ -9,25 +9,27 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'student_id';
+  //no need to define the primary key because it's id
 
     protected $fillable = [
-        'user_id',
+        'student_id',
+        'student_name',
+        'phoneNumber',
+        'email',
         'pc_brand',
         'serial_number',
         'pc_color',
         'qr_code',
+        'status',
+        'pc_id'
+    
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 
      // Relationship: A student has one PC
      public function pc()
      {
-         return $this->hasOne(PC::class, 'owner_id');
+         return $this->hasOne(PC::class, 'owner_id', 'student_id'); //owner id in pc refers to student id in student
      }
     
 

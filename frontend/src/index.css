@@ -9,3 +9,6 @@ body{
   background:  #000F1F;
   font-family: "Poppins", sans-serif;
 }
+body::-webkit-scrollbar {
+  display: none;
+}
