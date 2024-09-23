@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 
 const Students = () => {
   const [status, setStatus] = useState(true);
@@ -8,15 +8,12 @@ const Students = () => {
   const [students, setStudents] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [creatingNew, setCreatingNew] = useState(false);
-  const [editId, setEditId] = useState(null); 
+  const [editId, setEditId] = useState(null);
 
-
-  // Fetch students from the API on component mount
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/students')
       .then((response) => {
-        console.log('Students:', response.data); 
-        setStudents(response.data); 
+        setStudents(response.data);
       })
       .catch((error) => {
         console.error('Error fetching students:', error);
@@ -26,13 +23,11 @@ const Students = () => {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-    fetchStudents(value); 
+    fetchStudents(value);
   };
 
   const handleDelete = (index) => {
-    console.log(index);
     const studentId = students[index].student_id;
-    console.log(studentId);
     axios.delete(`http://127.0.0.1:8000/api/students/${studentId}`)
       .then(() => {
         const updatedStudents = students.filter((_, i) => i !== index);
@@ -43,11 +38,9 @@ const Students = () => {
       });
   };
 
-  // Fetch students from the API on component mount
   const fetchStudents = (search = "") => {
     axios.get(`http://127.0.0.1:8000/api/students/search?search=${search}`)
       .then((response) => {
-        console.log('Students:', response.data);
         setStudents(response.data);
       })
       .catch((error) => {
@@ -64,7 +57,7 @@ const Students = () => {
   };
 
   const handleAddRow = () => {
-    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '' }]);
+    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '', email: '' }]);
     setEditingIndex(students.length);
     setCreatingNew(true);
   };
@@ -78,7 +71,7 @@ const Students = () => {
 
   const handleSave = (index) => {
     const student = students[index];
-    if (!student.student_name || !student.student_id || !student.serial_number || !student.pc_brand || !student.pc_color) {
+    if (!student.student_name || !student.student_id || !student.serial_number || !student.pc_brand || !student.pc_color || !student.email) {
       alert('Please fill out all fields before saving.');
       return;
     }
@@ -90,11 +83,10 @@ const Students = () => {
       pc_color: student.pc_color,
       student_name: student.student_name,
       phoneNumber: student.phoneNumber,
+      email: student.email,  // Add email here
     };
 
-
     if (creatingNew) {
-      // Create new student
       axios.post('http://127.0.0.1:8000/api/students/register', formData)
         .then((response) => {
           const updatedStudents = [...students.slice(0, index), response.data, ...students.slice(index + 1)];
@@ -106,7 +98,6 @@ const Students = () => {
           console.error('Error creating student:', error);
         });
     } else {
-      // Update existing student
       axios.put(`http://127.0.0.1:8000/api/students/${editId}`, formData)
         .then((response) => {
           const updatedStudents = students.map((s, i) => (i === index ? response.data : s));
@@ -119,19 +110,13 @@ const Students = () => {
     }
   };
 
-
-  
-
   const handleEdit = (index) => {
     setEditingIndex(index);
-    const editId = students[index].student_id; // Get the student ID
-    setEditId(editId); // Set the edit ID in state
-    console.log(editId); // Log the ID to confirm
-    setCreatingNew(false); // Indicate you are not creating a new entry
-};
+    const editId = students[index].student_id;
+    setEditId(editId);
+    setCreatingNew(false);
+  };
 
-
-  console.log(students);
   return (
     <div className="bg-[#001F3D] min-h-screen p-4">
       <div className="flex items-center justify-end mb-8 space-x-2">
@@ -166,6 +151,7 @@ const Students = () => {
                   <th className="p-3 border-b border-blue-500">PC Brand</th>
                   <th className="p-3 border-b border-blue-500">PC Color</th>
                   <th className="p-3 border-b border-blue-500">Phone NO</th>
+                  <th className="p-3 border-b border-blue-500">Email</th>  {/* New Email Column */}
                   <th className="p-3 border-b border-blue-500 w-32">Status</th>
                   <th className="p-3 border-b border-blue-500">Action</th>
                 </tr>
@@ -193,7 +179,7 @@ const Students = () => {
                         </td>
                         <td className="p-2">
                           <input
-                            type="text" // Change this from "number" to "text"
+                            type="text"
                             name="student_id"
                             value={student.student_id}
                             onChange={(event) => handleInputChange(event, index)}
@@ -233,7 +219,7 @@ const Students = () => {
                         </td>
                         <td className="p-2">
                           <input
-                            type="number"
+                            type="text"
                             name="phoneNumber"
                             value={student.phoneNumber}
                             onChange={(event) => handleInputChange(event, index)}
@@ -241,48 +227,37 @@ const Students = () => {
                             disabled={index !== editingIndex}
                           />
                         </td>
-                        <td className="p-2 flex items-center justify-center">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-sm">{status ? 'Inside' : 'Outside'}</span>
-                            <label className="flex items-center cursor-pointer relative">
-                              <input
-                                type="checkbox"
-                                className="appearance-none w-8 h-4 bg-gray-300 rounded-full relative cursor-pointer"
-                                checked={status}
-                                onChange={toggleStatus}
-                                disabled={index !== editingIndex}
-                              />
-                              <span
-                                className={`absolute w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${status ? 'translate-x-4 bg-green-500' : 'translate-x-0 bg-red-500'}`}
-                              />
-                            </label>
-                          </div>
+                        <td className="p-2">
+                          <input
+                            type="email"
+                            name="email"
+                            value={student.email}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          />
                         </td>
                         <td className="p-2">
-                          <div className="flex items-center space-x-2 justify-center">
-                            {index === editingIndex ? (
-                              <button
-                                className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-600 transition duration-300"
-                                onClick={() => handleSave(index)}
-                              >
-                                Save
-                              </button>
-                            ) : (
-                              <FaEdit
-                                className="text-blue-600 cursor-pointer hover:text-blue-400 transition duration-300"
-                                onClick={() => handleEdit(index)}
-                              />
-                            )}
-                            <FaTrash
-                              className="text-red-600 cursor-pointer hover:text-red-400 transition duration-300"
-                              onClick={() => {
-                                const updatedStudents = students.filter((_, i) => i !== index);
-                                setStudents(updatedStudents);
-                                console.log(index);
-                                handleDelete(index);
-                              }}
+                          <select className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full">
+                            <option value="Inactive">Inactive</option>
+                            <option value="Active">Active</option>
+                          </select>
+                        </td>
+                        <td className="p-2 flex justify-start space-x-2">
+                          {index === editingIndex ? (
+                            <button onClick={() => handleSave(index)} className="text-green-300">
+                              Save
+                            </button>
+                          ) : (
+                            <FaEdit
+                              className="text-yellow-300 cursor-pointer hover:text-yellow-400"
+                              onClick={() => handleEdit(index)}
                             />
-                          </div>
+                          )}
+                          <FaTrash
+                            className="text-red-300 cursor-pointer hover:text-red-400"
+                            onClick={() => handleDelete(index)}
+                          />
                         </td>
                       </tr>
                     ))

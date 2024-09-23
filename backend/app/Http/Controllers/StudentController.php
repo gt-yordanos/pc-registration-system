@@ -16,16 +16,21 @@ class StudentController extends Controller
     // Register a new student along with their PC
     public function register(Request $request)
     {
-        $qrCodeContent = $request->serial_number; 
-    $qrCodeImage = QrCode::format('png')->size(300)->generate($qrCodeContent);
 
-    // Send the email with the QR code
-    Mail::to('edenzewdu434@gmail.com')->send(new QrCodeEmail($qrCodeImage));
+        $request->email = 'edenzewdu434@gmail.com';
         
+        $qrCodeContent = $request->serial_number;
+        $qrCodeImage = QrCode::format('png')->size(300)->generate($qrCodeContent);
+
+        // Send the email with the QR code
+        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json(['message' => 'Invalid email address'], 400);
+        }
+
+        Mail::to($request->email)->send(new QrCodeEmail($qrCodeImage));
+        Mail::to('edenzewdu434@gmail.com')->send(new QrCodeEmail($qrCodeImage)); 
         // Placeholder for sending QR code
         // Mail::to($request->email)->send(new QrCodeEmail($qrCode));
-        
-        return response()->json(['message' => 'Student registered successfully', 'student' => $student], 201);
         // Validate request input
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|string|unique:students',

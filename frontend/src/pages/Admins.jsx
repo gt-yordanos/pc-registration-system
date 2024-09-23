@@ -45,8 +45,7 @@ const Admins = () => {
   };
 
   const handleAddRow = () => {
-    const newAdminId = uuidv4();
-    setAdmins([...admins, { username: '', admin_id: newAdminId, phoneNumber: '', email: '', password: '', profile_picture: '' }]);
+    setAdmins([...admins, { username: '', admin_id: '', phoneNumber: '', email: '', password: '', profile_picture: '' }]);
     setEditingIndex(admins.length);
     setCreatingNew(true);
   };
@@ -197,8 +196,9 @@ const Admins = () => {
                             type="text"
                             name="admin_id"
                             value={admin.admin_id} // Controlled input
+                            onChange={(event) => handleInputChange(event, index)}
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                            disabled // Keep this field always disabled
+                            disabled={index !== editingIndex}
                           />
                         </td>
                         <td className="p-2">

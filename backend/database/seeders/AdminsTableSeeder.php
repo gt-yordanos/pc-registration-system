@@ -18,6 +18,7 @@ class AdminsTableSeeder extends Seeder
     {
         // Create a super admin
         DB::table('admins')->insert([
+            'admin_id' => 'superadmin123',
             'username' => 'Super Admin',
             'email' => 'superadmin@example.com', 
             'password' => bcrypt('password123'), 
