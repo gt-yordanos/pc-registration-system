@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Admins = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [admins, setAdmins] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [creatingNew, setCreatingNew] = useState(false);
@@ -161,6 +162,7 @@ const Admins = () => {
           className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300"
           title="Add New Admin"
           aria-label="Add New Admin"
+          onClick={handleAddRow}
           onClick={handleAddRow}
         />
         <div className="relative flex items-center bg-[#001F3D] rounded-lg border border-blue-500">

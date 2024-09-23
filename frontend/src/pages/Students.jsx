@@ -70,6 +70,12 @@ const Students = () => {
     setStudents(updatedStudents);
   };
 
+  const handleStatusToggle = (index) => {
+    const updatedStudents = [...students];
+    updatedStudents[index].status = !updatedStudents[index].status; // Toggle the specific student's status
+    setStudents(updatedStudents);
+  };
+
   const handleSave = (index) => {
     const student = students[index];
     if (!student.student_name || !student.student_id || !student.serial_number || !student.pc_brand || !student.pc_color || !student.email) {
@@ -139,10 +145,13 @@ const Students = () => {
           />
           <FaSearch className="text-blue-300 ml-2 cursor-pointer h-10 mr-2" />
         </div>
+        {/* Settings Button */}
+        <Settings setIsStatusVisible={setIsStatusVisible} />
       </div>
 
       <div className="bg-[#001F3D] p-6 rounded-lg shadow-lg relative">
         <div className="overflow-x-auto">
+          <div className="shadow-2xl p-2 rounded-lg">
           <div className="shadow-2xl p-2 rounded-lg">
             <table className="min-w-full text-left bg-[#001F3D] text-gray-400 border-collapse">
               <thead>

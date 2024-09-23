@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSidebar } from '../../Contexts/SidebarContext';
 import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
-import closeIcon from '../../assets/bx-x.svg';
-import menuIcon from '../../assets/bx-menu.svg';
+import ProfileCard from './ProfileCard';
+import ThemeToggler from './ThemeToggler'; // Import the ThemeToggler
 
 const Navbar = () => {
   const { sideBarStatus, toggleSidebar } = useSidebar(); 
@@ -52,11 +52,12 @@ const Navbar = () => {
           />
         </div>
 
+        {/* System logo */}
         <div className="flex justify-center items-center gap-3">
-          <div className='bg-[#CCFFFF] w-12 h-12 rounded-xl flex items-center justify-center'>
-            <img src={computerIcon} className='w-8' alt="Computer Icon" />
+          <div className='bg-[#CCFFFF] h-8 w-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center'>
+            <img src={computerIcon} className='w-6 sm:w-8' alt="Computer Icon" />
           </div>
-          <h1 className='text-[#CCFFFF] font-bold text-2xl'>PC Registration System</h1>
+          <h1 className='text-[#CCFFFF] font-bold text-sm sm:text-2xl'>PC Registration System</h1>
         </div>
       </div>
 
