@@ -46,21 +46,20 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'admin_id' => 'required|string|unique:admins', // Validate admin_id
-            'username' => 'required|string', // Username is required
-            'password' => 'required|string|min:6', // Password validation
-            'role' => 'required|in:super_admin,admin', // Role validation
-            'email' => 'nullable|email|unique:admins', // Email validation
-            'profile_picture' => 'nullable|string', // Profile picture validation
-            'phoneNumber' => 'nullable|string', // Phone number validation
+            'admin_id' => 'required|string|unique:admins',
+            'username' => 'required|string', 
+            'password' => 'required|string|min:6',  
+            'email' => 'nullable|email|unique:admins', 
+            'profile_picture' => 'nullable|string', 
+            'phoneNumber' => 'nullable|string', 
         ]);
     
         // Create a new admin record
         $admin = Admin::create([
-            'admin_id' => $request->admin_id, // Set admin_id from request
-            'username' => $request->username, // Set username from request
-            'password' => Hash::make($request->password), // Hash the password
-            'role' => $request->role, // Set role from request
+            'admin_id' => $request->admin_id, 
+            'username' => $request->username, 
+            'password' => Hash::make($request->password), 
+            'role' => 'admin', // Set role to 'admin' by default
             'email' => $request->email, // Set email from request
             'profile_picture' => $request->profile_picture, // Set profile picture
             'phoneNumber' => $request->phoneNumber, // Set phone number
@@ -68,7 +67,7 @@ class AdminController extends Controller
     
         return response()->json($admin, 201); // Return created admin with 201 status
     }
-    
+
     // Update an existing admin
     public function update(Request $request, $id)
     {
@@ -79,7 +78,7 @@ class AdminController extends Controller
         $request->validate([
             'username' => 'sometimes|required|string', // Username is required if provided
             'password' => 'sometimes|string|min:6', // Password must be at least 6 characters if provided
-            'role' => 'sometimes|required|in:super_admin,admin', // Role should be valid if provided
+           // 'role' => 'sometimes|required|in:super_admin,admin', // Role should be valid if provided
             'email' => 'nullable|email|unique:admins,email,' . $admin->id, // Email validation
             'profile_picture' => 'nullable|string', // Profile picture is optional
             'phoneNumber' => 'nullable|string', // Phone number is optional
