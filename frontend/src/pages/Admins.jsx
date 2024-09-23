@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Admins = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
   const [admins, setAdmins] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [creatingNew, setCreatingNew] = useState(false);
@@ -163,7 +162,6 @@ const Admins = () => {
           title="Add New Admin"
           aria-label="Add New Admin"
           onClick={handleAddRow}
-          onClick={handleAddRow}
         />
         <div className="relative flex items-center bg-[#001F3D] rounded-lg border border-blue-500">
           <input
@@ -221,9 +219,7 @@ const Admins = () => {
                             value={admin.admin_id} // Controlled input
                             onChange={(event) => handleInputChange(event, index)}
                             className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                            disabled={index !== editingIndex}
                              disabled={index !== editingIndex} // Make this editable based on index
-                            onChange={(event) => handleInputChange(event, index)} // Added onChange
                           />
                         </td>
                         <td className="p-2">

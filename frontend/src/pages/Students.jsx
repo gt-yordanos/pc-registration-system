@@ -286,7 +286,7 @@ const Students = () => {
         </div>
       </div>
     </div>
+    </div>
   );
-};
-
+}
 export default Students;
