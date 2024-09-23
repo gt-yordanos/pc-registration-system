@@ -19,7 +19,8 @@ class CreateStudentsTable extends Migration
             $table->string('pc_brand');
             $table->string('serial_number')->unique();
             $table->string('pc_color');
-            $table->string('qr_code')->nullable();
+            $table->text('qr_code')->nullable();
+            $table->enum('status', ['in', 'out']);
             $table->timestamps();
         });
     }

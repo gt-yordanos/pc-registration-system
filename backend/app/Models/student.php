@@ -20,6 +20,7 @@ class Student extends Model
         'serial_number',
         'pc_color',
         'qr_code',
+        'status',
         'pc_id'
     
     ];

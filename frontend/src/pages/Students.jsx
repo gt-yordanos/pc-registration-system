@@ -14,6 +14,7 @@ const Students = () => {
     axios.get('http://127.0.0.1:8000/api/students')
       .then((response) => {
         setStudents(response.data);
+        console.log('student:', response.data); 
       })
       .catch((error) => {
         console.error('Error fetching students:', error);
@@ -57,7 +58,7 @@ const Students = () => {
   };
 
   const handleAddRow = () => {
-    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '', email: '' }]);
+    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '', email: '', status: '' }]);
     setEditingIndex(students.length);
     setCreatingNew(true);
   };
@@ -83,7 +84,8 @@ const Students = () => {
       pc_color: student.pc_color,
       student_name: student.student_name,
       phoneNumber: student.phoneNumber,
-      email: student.email,  // Add email here
+      email: student.email,
+      status: student.status, // Include status in formData
     };
 
     if (creatingNew) {
@@ -99,9 +101,10 @@ const Students = () => {
         });
     } else {
       axios.put(`http://127.0.0.1:8000/api/students/${editId}`, formData)
-        .then((response) => {
-          const updatedStudents = students.map((s, i) => (i === index ? response.data : s));
-          setStudents(updatedStudents);
+        .then(() => {
+          setStudents(prevStudents => prevStudents.map((student, i) =>
+            i === index ? { ...student, ...formData } : student
+          ));
           setEditingIndex(null);
         })
         .catch((error) => {
@@ -151,15 +154,15 @@ const Students = () => {
                   <th className="p-3 border-b border-blue-500">PC Brand</th>
                   <th className="p-3 border-b border-blue-500">PC Color</th>
                   <th className="p-3 border-b border-blue-500">Phone NO</th>
-                  <th className="p-3 border-b border-blue-500">Email</th>  {/* New Email Column */}
-                  <th className="p-3 border-b border-blue-500 w-32">Status</th>
+                  <th className="p-3 border-b border-blue-500">Email</th>
+                  <th className="p-3 border-b border-blue-500">Status</th> {/* New Status Column */}
                   <th className="p-3 border-b border-blue-500">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {students.length === 0 ? (
                   <tr>
-                    <td colSpan="9" className="text-center">No students found.</td>
+                    <td colSpan="10" className="text-center">No students found.</td>
                   </tr>
                 ) : (
                   students
@@ -238,9 +241,15 @@ const Students = () => {
                           />
                         </td>
                         <td className="p-2">
-                          <select className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full">
-                            <option value="Inactive">Inactive</option>
-                            <option value="Active">Active</option>
+                          <select
+                            name="status"
+                            value={student.status}
+                            onChange={(event) => handleInputChange(event, index)}
+                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            disabled={index !== editingIndex}
+                          >
+                            <option value="in">In</option>
+                            <option value="out">Out</option>
                           </select>
                         </td>
                         <td className="p-2 flex justify-start space-x-2">

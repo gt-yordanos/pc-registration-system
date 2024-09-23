@@ -50,7 +50,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/admins/{id}', [AdminController::class, 'show']);
     Route::post('/admins/register', [AdminController::class, 'store']);
     Route::put('/admins/{id}', [AdminController::class, 'update']);
-    Route::delete('/admins/{id}', [AdminController::class, 'destroy']);
+    Route::delete('/admins/{id}', [AdminController::class, 'delete']);
 
     // PC routes
     Route::get('/pcs', [PcController::class, 'index']);
