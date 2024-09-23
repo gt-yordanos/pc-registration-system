@@ -95,12 +95,13 @@ class AdminController extends Controller
         return response()->json($admin); // Return the updated admin data
     }
 
-    // Delete an admin
-    public function delete($id)
-    {
-        // Find the admin by admin_id or fail
-        $admin = Admin::where('admin_id', $id)->firstOrFail();
-        $admin->delete(); // Delete the admin record
-        return response()->json(null, 204); // Return a 204 status for successful deletion
-    }
+
+public function destroy($id)
+{
+    // Find the admin by admin_id or fail
+    $admin = Admin::where('admin_id', $id)->firstOrFail();
+    $admin->delete(); // Delete the admin record
+    return response()->json(null, 204); // Return a 204 status for successful deletion
 }
+
+   }

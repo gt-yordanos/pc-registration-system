@@ -69,6 +69,7 @@ const Admins = () => {
 
   const handleSave = (index) => {
     const admin = admins[index];
+    
     if (creatingNew) {
         // Create new admin
         if (!admin.username || !admin.admin_id || !admin.phoneNumber || !admin.email || !admin.password) {
@@ -129,17 +130,29 @@ const Admins = () => {
     setCreatingNew(false); // Indicate it's not a new admin
   };
 
+ 
+ 
   const handleDelete = (index) => {
     const adminId = admins[index].admin_id;
+
+    // Confirm deletion
+    const confirmDelete = window.confirm("Are you sure you want to delete this admin?");
+    if (!confirmDelete) return;
+
     axios.delete(`http://127.0.0.1:8000/api/admins/${adminId}`)
-      .then(() => {
-        const updatedAdmins = admins.filter((_, i) => i !== index);
-        setAdmins(updatedAdmins);
-      })
-      .catch((error) => {
-        console.error('Error deleting admin:', error);
-      });
-  };
+        .then(() => {
+            // Update state to remove deleted admin
+            const updatedAdmins = admins.filter((_, i) => i !== index);
+            setAdmins(updatedAdmins);
+            console.log(`Admin with ID ${adminId} deleted successfully.`);
+        })
+        .catch((error) => {
+            console.error('Error deleting admin:', error.response ? error.response.data : error.message);
+            alert('Failed to delete admin: ' + (error.response && error.response.data ? error.response.data.message : error.message));
+        });
+};
+
+
 
   return (
     <div className="bg-[#001F3D] min-h-screen p-4">
