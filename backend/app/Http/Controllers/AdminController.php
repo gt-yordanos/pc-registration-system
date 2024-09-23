@@ -30,7 +30,6 @@ public function login(Request $request)
     return response()->json(['message' => 'Invalid credentials'], 401);
 }
 
-
     // Retrieve all admins
     public function index()
     {
@@ -93,6 +92,30 @@ public function login(Request $request)
 
         return response()->json($admin);
     }
+
+    public function getChartData()
+{
+    $admins = Admin::all();
+    
+    // Initialize an array for monthly counts
+    $monthlyCounts = array_fill(0, 12, 0);
+
+    foreach ($admins as $admin) {
+        $month = (int)date('m', strtotime($admin->created_at)) - 1; // Get month index (0-11)
+        $monthlyCounts[$month]++;
+    }
+
+    return response()->json([
+        'barData1' => [
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            'datasets' => [[
+                'label' => 'Total Admin Registrations',
+                'data' => $monthlyCounts,
+                'backgroundColor' => '#e2ad00e1',
+            ]],
+        ],
+    ]);
+}
 
 
 public function destroy($id)

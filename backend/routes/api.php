@@ -58,6 +58,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/pcs', [PcController::class, 'store']);
     Route::put('/pcs/{id}', [PcController::class, 'update']);
     Route::delete('/pcs/{id}', [PcController::class, 'delete']);
+    Route::get('/chart-data', [PCController::class, 'getChartData']);
 
     // QR Code routes
     Route::post('/qrcodes/generate', [QrController::class, 'generate']);
