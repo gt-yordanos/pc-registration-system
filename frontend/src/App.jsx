@@ -9,6 +9,7 @@ import Settings from './Pages/Settings';
 import Students from './pages/Students';
 import Admins from './Pages/Admins';
 import Login from './Pages/Login';
+import PrivateRoute from './Components/privateRoute';
 
 function App() {
   return (

@@ -4,6 +4,7 @@ import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
 import ProfileCard from './ProfileCard';
 import ThemeToggler from './ThemeToggler'; // Import the ThemeToggler
+import closeIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 
 const Navbar = () => {
   const { sideBarStatus, toggleSidebar } = useSidebar(); 

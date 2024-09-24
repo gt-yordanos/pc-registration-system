@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios';
+import Settings from './Settings';
 
 const Students = () => {
   const [status, setStatus] = useState(true);
@@ -9,6 +10,7 @@ const Students = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [creatingNew, setCreatingNew] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [isStatusVisible,setIsStatusVisible] = useState(false);
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/students')
