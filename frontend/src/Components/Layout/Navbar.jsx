@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSidebar } from '../../Contexts/SidebarContext';
 import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
+import { MdClose, MdMenu } from 'react-icons/md'; // Import close and menu icons from react-icons
 import ProfileCard from './ProfileCard';
 import ThemeToggler from './ThemeToggler'; // Import the ThemeToggler
 import closeIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
@@ -42,15 +43,14 @@ const Navbar = () => {
   };
 
   return (
-    <div className='bg-[#000F1F] w-screen h-[13%] border-b-4 border-[#00AED9] flex items-center justify-between px-4'>
+    <div className='bg-[#001F3D] h-[13%] mx-2 rounded-lg my-1 flex items-center justify-between px-4'>
       <div className='flex items-center gap-10 sm:gap-0'>
         <div className="bg-white h-10 w-10 flex items-center justify-center cursor-pointer rounded-full sm:hidden">
-          <img
-            src={sideBarStatus === 'hidden' ? menuIcon : closeIcon}
-            alt="Menu Toggle Icon"
-            className="w-9"
-            onClick={toggleSidebar}
-          />
+          {sideBarStatus === 'hidden' ? (
+            <MdMenu className="w-9" onClick={toggleSidebar} /> // Show menu icon when sidebar is hidden
+          ) : (
+            <MdClose className="w-9" onClick={toggleSidebar} /> // Show close icon when sidebar is visible
+          )}
         </div>
 
         {/* System logo */}

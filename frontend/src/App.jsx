@@ -6,10 +6,11 @@ import { MobileMenuProvider } from './Contexts/MobileMenuContext'; // Import Mob
 import MainLayout from './Components/Layout/MainLayout';
 import Dashboard from './Pages/Dashboard';
 import Settings from './Pages/Settings';
-import Students from './pages/Students';
+import Students from './Pages/Students';
 import Admins from './Pages/Admins';
 import Login from './Pages/Login';
-import PrivateRoute from './Components/privateRoute';
+import PrivateRoute from './Components/PrivateRoute'
+
 
 function App() {
   return (
