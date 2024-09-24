@@ -78,31 +78,31 @@ const Dashboard = () => {
   const recentPCRegistrations = pcs.filter(pc => new Date(pc.created_at).getMonth() === new Date().getMonth()).length;
 
   return (
-    <div className="p-4 w-full h-full" style={{ backgroundColor: '#001F3D', color: '#CCFFFF' }}>
+    <div className="p-4 w-full h-full navbar">
       <h1 className="text-2xl font-bold mb-4">Super Admin Dashboard</h1>
       <div className="grid grid-cols-1 custom:grid-cols-[55%,45%] gap-4 mb-4">
         <div className="grid grid-cols-1 gap-4">
-          <div className="p-4 bg-[#00294D] rounded-md shadow-md">
+          <div className="p-4 rounded-md shadow-md" style={{border: `solid var(--text-color) 2px`,}}>
             <h2 className="text-lg font-semibold mb-2">Admin Registrations Over the Year</h2>
             <BarChart data={barData1} />
           </div>
-          <div className="p-4 bg-[#00294D] rounded-md shadow-md">
+          <div className="p-4 rounded-md shadow-md">
             <h2 className="text-lg font-semibold mb-2">PC Registrations Over the Year</h2>
             <BarChart data={barData2} />
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 bg-[#00294D] rounded-md shadow-md">
+            <div className="p-4 rounded-md shadow-md">
               <h2 className="text-lg font-semibold mb-2">Admin Gender Distribution</h2>
               <PieChart data={pieData1} />
             </div>
-            <div className="p-4 bg-[#00294D] rounded-md shadow-md">
+            <div className="p-4 rounded-md shadow-md">
               <h2 className="text-lg font-semibold mb-2">PC In/Out Status</h2>
               <PieChart data={pieData2} />
             </div>
           </div>
         </div>
 
-        <div className="bg-[#1c4a72] p-4 rounded-md shadow-md">
+        <div className="p-4 rounded-md shadow-md flex flex-col gap-2 " style={{ border: 'solid var(--text-color) 2px' }}>
           <InfoCard title="Total Admin Registrations" value={totalAdminRegistrations} />
           <InfoCard title="Total PC Registrations This Month" value={recentPCRegistrations} />
           <InfoCard title="Total PCs Currently Registered" value={totalPCRegistrations} />

@@ -166,7 +166,7 @@ const Students = () => {
                   students
                     .filter(student => student.student_name.toLowerCase().includes(searchTerm.toLowerCase()))
                     .map((student, index) => (
-                      <tr key={student.id || index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
+                      <tr key={student.id || index} className={`navbar border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
                         <td className="p-2">{index + 1}</td>
                         <td className="p-2">
                           <input
@@ -174,7 +174,7 @@ const Students = () => {
                             name="student_name"
                             value={student.student_name}
                             onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
                           />
                         </td>
@@ -214,7 +214,7 @@ const Students = () => {
                             name="pc_color"
                             value={student.pc_color}
                             onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
                           />
                         </td>

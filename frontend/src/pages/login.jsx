@@ -44,7 +44,7 @@ const Login = () => {
       </div>
       <form onSubmit={handleLogin} method='POST' className='flex flex-col justify-center items-center space-y-4'>
         <div className='mb-2 relative'>
-          <label htmlFor="username" className='text-left text-[#CCFFFF]'>Username</label>
+          <label htmlFor="username" className='text-left'>Username</label>
           <input
             type="text"
             placeholder='Enter username'
@@ -54,13 +54,13 @@ const Login = () => {
           />
         </div>
         <div className='mb-2 relative'>
-          <label htmlFor="password" className='text-left text-[#CCFFFF]'>Password</label>
+          <label htmlFor="password" className='text-left '>Password</label>
           <input
             type={passwordVisible ? 'text' : 'password'}
             placeholder='Enter password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className='w-full p-2 border border-[#005F8F] bg-transparent text-[#A9A9A9]'
+            className='w-full p-2 border border-[#005F8F] bg-transparent'
           />
           <span
             className="absolute right-3 top-10 text-textSecondary cursor-pointer"

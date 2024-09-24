@@ -155,30 +155,30 @@ const Admins = () => {
 
 
   return (
-    <div className="bg-[#001F3D] min-h-screen p-4">
+    <div className="navbar min-h-screen p-4">
       <div className="flex items-center justify-end mb-8 space-x-2">
         <FaUserPlus
-          className="text-blue-300 text-2xl cursor-pointer hover:text-blue-400 transition duration-300"
+          className=" text-2xl cursor-pointer hover:text-blue-400 transition duration-300"
           title="Add New Admin"
           aria-label="Add New Admin"
           onClick={handleAddRow}
         />
-        <div className="relative flex items-center bg-[#001F3D] rounded-lg border border-blue-500">
+        <div className="relative flex items-center navbar rounded-lg border border-blue-500">
           <input
             type="text"
             placeholder="Search..."
-            className="p-2 bg-[#001F3D] text-blue-300 rounded-lg placeholder-blue-300 w-64 h-10 flex-1 border-none outline-none focus:border-blue-500 focus:ring-0 transition duration-300"
+            className="p-2 navbar rounded-lg placeholder-blue-300 w-64 h-10 flex-1 border-none outline-none focus:border-blue-500 focus:ring-0 transition duration-300"
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <FaSearch className="text-blue-300 ml-2 cursor-pointer h-10 mr-2" />
+          <FaSearch className=" ml-2 cursor-pointer h-10 mr-2" />
         </div>
       </div>
 
-      <div className="bg-[#001F3D] p-6 rounded-lg shadow-lg relative">
+      <div className="navbar p-6 rounded-lg shadow-lg relative">
         <div className="overflow-x-auto">
           <div className="shadow-2xl p-2 rounded-lg">
-            <table className="min-w-full text-left bg-[#001F3D] text-gray-400 border-collapse">
+            <table className="min-w-full text-left navbar border-collapse">
               <thead>
                 <tr className="border-b border-blue-500">
                   <th className="p-3 border-b border-blue-500">#</th>
@@ -200,16 +200,17 @@ const Admins = () => {
                   admins
                     .filter(admin => admin.username.toLowerCase().includes(searchTerm.toLowerCase()))
                     .map((admin, index) => (
-                      <tr key={admin.id || index} className={`bg-[#001F3D] border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
+                      <tr key={admin.id || index} className={`navbar ${index === editingIndex ? 'bg-[#002B6C]' : ''}`} >
                         <td className="p-2">{index + 1}</td>
-                        <td className="p-2">
+                        <td className="p-2  ">
                           <input
                             type="text"
                             name="username"
                             value={admin.username} // Controlled input
                             onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
+                            style={{border : 'solid var(--button-color) 2px'}}
                           />
                         </td>
                         <td className="p-2">
@@ -218,8 +219,9 @@ const Admins = () => {
                             name="admin_id"
                             value={admin.admin_id} // Controlled input
                             onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                              disabled={index !== editingIndex} // Make this editable based on index
+                             style={{border : 'solid var(--button-color) 2px'}}
                           />
                         </td>
                         <td className="p-2">
@@ -228,8 +230,9 @@ const Admins = () => {
                             name="phoneNumber"
                             value={admin.phoneNumber} // Controlled input
                             onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
+                            style={{border : 'solid var(--button-color) 2px'}}
                           />
                         </td>
                         <td className="p-2">
@@ -238,8 +241,9 @@ const Admins = () => {
                             name="email"
                             value={admin.email} // Controlled input
                             onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
+                            style={{border : 'solid var(--button-color) 2px'}}
                           />
                         </td>
                         <td className="p-2">
@@ -248,8 +252,9 @@ const Admins = () => {
                             name="password"
                             value={admin.password} // Controlled input
                             onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
+                            style={{border : 'solid var(--button-color) 2px'}}
                           />
                         </td>
                         <td className="p-2">
@@ -257,20 +262,21 @@ const Admins = () => {
                             type="file"
                             name="profile_picture"
                             onChange={(event) => handleFileChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
+                            className="navbar p-2 rounded-lg border-none w-full"
                             disabled={index !== editingIndex}
+                            style={{border : 'solid var(--button-color) 2px'}}
                           />
                         </td>
                         <td className="p-2">
                           {index === editingIndex ? (
                             <FaSave
-                              className="text-blue-300 text-xl cursor-pointer mr-2"
+                              className="navbar text-xl cursor-pointer mr-2"
                               title="Save"
                               onClick={() => handleSave(index)}
                             />
                           ) : (
                             <FaEdit
-                              className="text-blue-300 text-xl cursor-pointer mr-2"
+                              className="navbar text-xl cursor-pointer mr-2"
                               title="Edit"
                               onClick={() => handleEdit(index)}
                             />
