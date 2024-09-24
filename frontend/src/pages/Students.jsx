@@ -1,45 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaUserPlus, FaSearch, FaEdit, FaTrash, FaSave } from 'react-icons/fa';
 import axios from 'axios';
 import Settings from './Settings';
 
 const Students = () => {
-  const [status, setStatus] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [creatingNew, setCreatingNew] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [isStatusVisible,setIsStatusVisible] = useState(false);
+  const [isStatusVisible, setIsStatusVisible]=useState(false);
+ // Fetch students from the API on component mount
+ useEffect(() => {
+  axios.get('http://127.0.0.1:8000/api/students')
+    .then((response) => {
+      console.log('Students:', response.data); 
+      setStudents(response.data); 
+    })
+    .catch((error) => {
+      console.error('Error fetching students:', error);
+    });
+}, []);
 
+  // Fetch students from the API on component mount
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/students')
-      .then((response) => {
-        setStudents(response.data);
-        console.log('student:', response.data); 
-      })
-      .catch((error) => {
-        console.error('Error fetching students:', error);
-      });
+    fetchStudents();
   }, []);
-
-  const handleSearchChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    fetchStudents(value);
-  };
-
-  const handleDelete = (index) => {
-    const studentId = students[index].student_id;
-    axios.delete(`http://127.0.0.1:8000/api/students/${studentId}`)
-      .then(() => {
-        const updatedStudents = students.filter((_, i) => i !== index);
-        setStudents(updatedStudents);
-      })
-      .catch((error) => {
-        console.error('Error deleting student:', error);
-      });
-  };
 
   const fetchStudents = (search = "") => {
     axios.get(`http://127.0.0.1:8000/api/students/search?search=${search}`)
@@ -51,16 +37,14 @@ const Students = () => {
       });
   };
 
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
-  const toggleStatus = () => {
-    setStatus(!status);
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    fetchStudents(value); 
   };
 
   const handleAddRow = () => {
-    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '', email: '', status: '' }]);
+    setStudents([...students, { student_name: '', student_id: '', serial_number: '', pc_brand: '', pc_color: '', phoneNumber: '', email: '', status: 'in' }]);
     setEditingIndex(students.length);
     setCreatingNew(true);
   };
@@ -72,18 +56,8 @@ const Students = () => {
     setStudents(updatedStudents);
   };
 
-  const handleStatusToggle = (index) => {
-    const updatedStudents = [...students];
-    updatedStudents[index].status = !updatedStudents[index].status; // Toggle the specific student's status
-    setStudents(updatedStudents);
-  };
-
   const handleSave = (index) => {
     const student = students[index];
-    if (!student.student_name || !student.student_id || !student.serial_number || !student.pc_brand || !student.pc_color || !student.email) {
-      alert('Please fill out all fields before saving.');
-      return;
-    }
 
     const formData = {
       student_id: student.student_id,
@@ -93,7 +67,7 @@ const Students = () => {
       student_name: student.student_name,
       phoneNumber: student.phoneNumber,
       email: student.email,
-      status: student.status, // Include status in formData
+      status: student.status,
     };
 
     if (creatingNew) {
@@ -126,6 +100,22 @@ const Students = () => {
     const editId = students[index].student_id;
     setEditId(editId);
     setCreatingNew(false);
+  };
+
+  const handleDelete = (index) => {
+    const studentId = students[index].student_id;
+
+    const confirmDelete = window.confirm("Are you sure you want to delete this student?");
+    if (!confirmDelete) return;
+
+    axios.delete(`http://127.0.0.1:8000/api/students/${studentId}`)
+      .then(() => {
+        const updatedStudents = students.filter((_, i) => i !== index);
+        setStudents(updatedStudents);
+      })
+      .catch((error) => {
+        console.error('Error deleting student:', error);
+      });
   };
 
   return (
