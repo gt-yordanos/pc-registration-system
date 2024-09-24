@@ -3,9 +3,9 @@ import { useMobileMenu } from '../../Contexts/MobileMenuContext';
 import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
 import { MdClose, MdMenu } from 'react-icons/md';
-import MobileMenu from './MobileMenu';
+import ProfileCard from './ProfileCard';
 import ThemeToggler from './ThemeToggler';
-import ProfileCard from './ProfileCard'; // Import ProfileCard
+import closeIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 
 const Navbar = () => {
   const { isMobileMenuVisible, toggleMobileMenu } = useMobileMenu();
