@@ -18,7 +18,7 @@ const Sidebar = () => {
   }, [location, handleItemSelect]);
 
   return (
-    <div className={`bg-[#001F3D] h-[99%] ml-2 mr-2 rounded-lg transition-all duration-300 
+    <div className={`sidebar h-[99%] ml-2 mr-2 rounded-lg transition-all duration-300 
       hidden sm:block ${isCollapsed ? 'w-20' : 'w-48'} flex-none`}
     >
       {/* Sidebar links */}
@@ -42,7 +42,7 @@ const Sidebar = () => {
               }}
             >
               <img src={item === 'dashboard' ? dashboardIcon : item === 'students' ? studentsIcon : item === 'admins' ? adminsIcon : settingsIcon} alt={`${item} Icon`} className='w-8 bg-[#CCFFFF] rounded-lg p-1' />
-              {!isCollapsed && <span className='text-white'>{item.charAt(0).toUpperCase() + item.slice(1)}</span>}
+              {!isCollapsed && <span className=''>{item.charAt(0).toUpperCase() + item.slice(1)}</span>}
             </Link>
           </li>
         ))}

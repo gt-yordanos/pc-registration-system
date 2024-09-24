@@ -27,7 +27,7 @@ const ContentSection = ({ selectedItem }) => {
   return (
     
     <div
-      className={`bg-primary flex-grow ml-1.5 mr-1.5 sm:ml-0  transition-all duration-300  h-[99%]  overflow-auto rounded-lg no-scrollbar`}
+      className={`content-section flex-grow ml-1.5 mr-1.5 sm:ml-0  transition-all duration-300  h-[99%]  overflow-auto rounded-lg no-scrollbar`}
     >
       {renderContent()}
     </div>

@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useSidebar } from '../../Contexts/SidebarContext';
+import { useMobileMenu } from '../../Contexts/MobileMenuContext';
 import computerIcon from '../../assets/laptop-minimalistic-svgrepo-com.svg';
 import ProfileIcon from '../../assets/profile-svgrepo-com.svg';
-import { MdClose, MdMenu } from 'react-icons/md'; // Import close and menu icons from react-icons
-import ProfileCard from './ProfileCard';
-import ThemeToggler from './ThemeToggler'; // Import the ThemeToggler
+import { MdClose, MdMenu } from 'react-icons/md';
+import MobileMenu from './MobileMenu';
+import ThemeToggler from './ThemeToggler';
+import ProfileCard from './ProfileCard'; // Import ProfileCard
 
 const Navbar = () => {
-  const { sideBarStatus, toggleSidebar } = useSidebar(); 
+  const { isMobileMenuVisible, toggleMobileMenu } = useMobileMenu();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Controls the dropdown state
   const [username, setUsername] = useState('');
   const [profilePic, setProfilePic] = useState('');
 
+  // Load user data from localStorage
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     const storedProfilePic = localStorage.getItem('profilePic');
@@ -25,77 +27,75 @@ const Navbar = () => {
     }
   }, []);
 
+  // Toggles profile card
   const handleLoginLogout = () => {
     if (isLoggedIn) {
-      setDropdownOpen(!dropdownOpen);
+      setDropdownOpen(!dropdownOpen); // Toggle dropdown for logged-in users
     } else {
-      window.location.href = '/login';
+      window.location.href = '/login'; // Redirect to login if not logged in
     }
   };
 
+  // Logout logic
   const handleLogout = () => {
-    localStorage.removeItem('username'); // Clear username from local storage
-    localStorage.removeItem('profilePic'); // Clear profile picture from local storage
+    localStorage.removeItem('username');
+    localStorage.removeItem('profilePic');
     setIsLoggedIn(false);
-    setDropdownOpen(false);
-    window.location.href = '/login'; // Redirect to login after logout
+    setDropdownOpen(false); // Close profile card after logout
+    window.location.href = '/login'; // Redirect to login
   };
 
   return (
-    <div className='bg-[#001F3D] h-[13%] mx-2 rounded-lg my-1 flex items-center justify-between px-4'>
+    <div className='relative navbar h-[13%] mx-2 rounded-lg my-1 flex items-center justify-between px-4'>
       <div className='flex items-center gap-10 sm:gap-0'>
-        <div className="bg-white h-10 w-10 flex items-center justify-center cursor-pointer rounded-full sm:hidden">
-          {sideBarStatus === 'hidden' ? (
-            <MdMenu className="w-9" onClick={toggleSidebar} /> // Show menu icon when sidebar is hidden
+        {/* Menu icon for mobile */}
+        <div className="bg-white h-12 w-12 flex items-center justify-center cursor-pointer rounded-full sm:hidden">
+          {isMobileMenuVisible ? (
+            <MdClose className="w-10 h-10" onClick={toggleMobileMenu} />
           ) : (
-            <MdClose className="w-9" onClick={toggleSidebar} /> // Show close icon when sidebar is visible
+            <MdMenu className="w-10 h-10" onClick={toggleMobileMenu} />
           )}
         </div>
 
-        {/* System logo */}
-        <div className="flex justify-center items-center gap-3">
+        {/* System logo (Visible on sm: and above) */}
+        <div className="hidden sm:flex justify-center items-center gap-3">
           <div className='bg-[#CCFFFF] h-8 w-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center'>
             <img src={computerIcon} className='w-6 sm:w-8' alt="Computer Icon" />
           </div>
-          <h1 className='text-[#CCFFFF] font-bold text-sm sm:text-2xl'>PC Registration System</h1>
+          <h1 className='font-bold text-sm sm:text-2xl'>PC Registration System</h1>
         </div>
       </div>
 
       <div className='relative flex items-center'>
-        <div className='bg-[#2a89a9] w-12 h-12 rounded-full flex items-center justify-center cursor-pointer'>
+        {/* Theme toggler (Visible on sm: and above) */}
+        <div className="hidden sm:block">
+          <ThemeToggler />
+        </div>
+
+        <div className='bg-[#2a89a9] w-12 h-12 rounded-full flex items-center justify-center cursor-pointer ml-4'>
           {profilePic ? (
-            <img 
-              src={profilePic} 
-              className='w-10 rounded-full' 
-              alt="Profile" 
-              onClick={handleLoginLogout}
+            <img
+              src={profilePic}
+              className='w-10 rounded-full'
+              alt="Profile"
+              onClick={handleLoginLogout} // Click event for profile
             />
           ) : (
-            <img 
-              src={ProfileIcon} 
-              className='w-10' 
-              alt="Profile Icon" 
-              onClick={handleLoginLogout}
+            <img
+              src={ProfileIcon}
+              className='w-10'
+              alt="Profile Icon"
+              onClick={handleLoginLogout} // Click event for profile
             />
           )}
         </div>
 
-        {isLoggedIn ? (
-          <div className='ml-3 cursor-pointer text-white' onClick={handleLoginLogout}>
-            {username}
-          </div>
-        ) : (
-          <div className='ml-3 cursor-pointer text-white' onClick={handleLoginLogout}>
-            Login
-          </div>
-        )}
-
+        {/* Render ProfileCard if dropdownOpen is true */}
         {dropdownOpen && isLoggedIn && (
-          <div className="absolute top-12 right-0 bg-white text-black rounded-md shadow-lg p-2">
-            <button onClick={handleLogout} className="w-full text-left p-2 hover:bg-gray-200">Logout</button>
-          </div>
+          <ProfileCard user={{ name: username }} onLogout={handleLogout} /> // Pass user data and logout handler
         )}
       </div>
+
     </div>
   );
 };

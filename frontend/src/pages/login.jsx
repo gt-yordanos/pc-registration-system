@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import ThemeToggler from '../Components/Layout/ThemeToggler';
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -34,10 +35,12 @@ const Login = () => {
   
 
   return (
-    <div className='flex flex-col justify-center items-center min-h-screen bg-[#000F1F]'>
+    <div className='flex flex-col justify-center items-center min-h-screen sidebar'>
+      <div className='fixed top-4 mx-auto'><ThemeToggler/></div>
+      
       <div className='text-center'>
-        <h1 className='font-bold text-2xl md:text-4xl text-[#CCFFFF]'>PC Registration System</h1>
-        <h2 className='text-xl md:text-2xl text-[#A9A9A9] mb-6'>Sign in to your account</h2>
+        <h1 className='font-bold text-2xl md:text-4xl'>PC Registration System</h1>
+        <h2 className='text-xl md:text-2xl mb-6'>Sign in to your account</h2>
       </div>
       <form onSubmit={handleLogin} method='POST' className='flex flex-col justify-center items-center space-y-4'>
         <div className='mb-2 relative'>
@@ -67,7 +70,7 @@ const Login = () => {
           </span>
         </div>
         <div className='w-full'>
-          <button type='submit' className='w-full p-2 bg-[#005F8F] text-[#CCFFFF]'>
+          <button type='submit' className='w-full p-2 bg-[#005F8F] text-[#CCFFFF]' style={{backgroundColor: 'var(--button-color)'}}>
             Login
           </button>
         </div>

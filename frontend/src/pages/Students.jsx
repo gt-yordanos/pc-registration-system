@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaUserPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios';
+import Settings from './Settings'; // Import the Settings component
 
 const Students = () => {
   const [status, setStatus] = useState(true);
@@ -9,6 +10,7 @@ const Students = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [creatingNew, setCreatingNew] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [isStatusVisible, setIsStatusVisible] = useState(true); // Define state for showing status column
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/students')
@@ -146,12 +148,11 @@ const Students = () => {
           <FaSearch className="text-blue-300 ml-2 cursor-pointer h-10 mr-2" />
         </div>
         {/* Settings Button */}
-        <Settings setIsStatusVisible={setIsStatusVisible} />
+        <Settings setIsStatusVisible={setIsStatusVisible} /> {/* Pass the setIsStatusVisible function */}
       </div>
 
       <div className="bg-[#001F3D] p-6 rounded-lg shadow-lg relative">
         <div className="overflow-x-auto">
-          <div className="shadow-2xl p-2 rounded-lg">
           <div className="shadow-2xl p-2 rounded-lg">
             <table className="min-w-full text-left bg-[#001F3D] text-gray-400 border-collapse">
               <thead>
@@ -164,7 +165,9 @@ const Students = () => {
                   <th className="p-3 border-b border-blue-500">PC Color</th>
                   <th className="p-3 border-b border-blue-500">Phone NO</th>
                   <th className="p-3 border-b border-blue-500">Email</th>
-                  <th className="p-3 border-b border-blue-500">Status</th> {/* New Status Column */}
+                  {isStatusVisible && ( // Conditionally render the status column
+                    <th className="p-3 border-b border-blue-500">Status</th>
+                  )}
                   <th className="p-3 border-b border-blue-500">Action</th>
                 </tr>
               </thead>
@@ -241,7 +244,7 @@ const Students = () => {
                         </td>
                         <td className="p-2">
                           <input
-                            type="email"
+                            type="text"
                             name="email"
                             value={student.email}
                             onChange={(event) => handleInputChange(event, index)}
@@ -249,33 +252,30 @@ const Students = () => {
                             disabled={index !== editingIndex}
                           />
                         </td>
-                        <td className="p-2">
-                          <select
-                            name="status"
-                            value={student.status}
-                            onChange={(event) => handleInputChange(event, index)}
-                            className="bg-[#001F3D] text-blue-300 p-2 rounded-lg border-none w-full"
-                            disabled={index !== editingIndex}
-                          >
-                            <option value="in">In</option>
-                            <option value="out">Out</option>
-                          </select>
-                        </td>
-                        <td className="p-2 flex justify-start space-x-2">
+                        {isStatusVisible && (
+                          <td className="p-2">
+                            <button
+                              onClick={() => handleStatusToggle(index)}
+                              className={`px-2 py-1 rounded-lg ${student.status ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
+                            >
+                              {student.status ? 'Active' : 'Inactive'}
+                            </button>
+                          </td>
+                        )}
+                        <td className="p-2 space-x-2">
                           {index === editingIndex ? (
-                            <button onClick={() => handleSave(index)} className="text-green-300">
+                            <button
+                              onClick={() => handleSave(index)}
+                              className="px-3 py-1 bg-blue-500 text-white rounded-lg"
+                            >
                               Save
                             </button>
                           ) : (
-                            <FaEdit
-                              className="text-yellow-300 cursor-pointer hover:text-yellow-400"
-                              onClick={() => handleEdit(index)}
-                            />
+                            <>
+                              <FaEdit className="cursor-pointer text-blue-300 hover:text-blue-400 transition duration-300" onClick={() => handleEdit(index)} />
+                              <FaTrash className="cursor-pointer text-red-500 hover:text-red-600 transition duration-300" onClick={() => handleDelete(index)} />
+                            </>
                           )}
-                          <FaTrash
-                            className="text-red-300 cursor-pointer hover:text-red-400"
-                            onClick={() => handleDelete(index)}
-                          />
                         </td>
                       </tr>
                     ))
@@ -286,7 +286,7 @@ const Students = () => {
         </div>
       </div>
     </div>
-    </div>
   );
-}
+};
+
 export default Students;
