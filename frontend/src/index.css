@@ -35,7 +35,7 @@ body::-webkit-scrollbar {
   --navbar-color: #ffffff;
   --sidebar-color: #F0F0F0;
   --content-color: #F0F0F0;
-  --button-color : #f11080;
+  --button-color : #301116 ;
 }
 
 /* Dark Theme */  
@@ -45,7 +45,7 @@ body::-webkit-scrollbar {
   --navbar-color:#000000 ;
   --sidebar-color: #121212;
   --content-color: #121212;
-  --button-color : #00b3ff;
+  --button-color : #d61562;
 }
 
 

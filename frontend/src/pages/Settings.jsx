@@ -10,7 +10,7 @@ const Settings = ({ setIsStatusVisible }) => {
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center transition-all duration-300">
       <label className="flex items-center cursor-pointer">
         <input
           type="checkbox"

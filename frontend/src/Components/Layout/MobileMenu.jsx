@@ -36,7 +36,7 @@ const MobileMenu = () => {
               <Link
                 to={`/${item}`}
                 className={`flex items-center w-52 gap-5 p-2 rounded-lg text-center ${selectedItem === item ? 'bg-[#005F8F] ' : ''}`}
-                onClick={() => handleLinkClick(item)} // Handle click
+                // Handle click
               >
                 <img
                   src={icons[item]}

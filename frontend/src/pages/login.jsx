@@ -53,7 +53,7 @@ const Login = () => {
             className='w-full p-2 border border-[#005F8F] bg-transparent text-[#A9A9A9]'
           />
         </div>
-        <div className='mb-2 relative'>
+        <div className='mb-2 relative transition-all duration-300'>
           <label htmlFor="password" className='text-left '>Password</label>
           <input
             type={passwordVisible ? 'text' : 'password'}

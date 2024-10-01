@@ -1,43 +1,34 @@
+// App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { SidebarProvider } from './Contexts/SidebarContext';
-import { LoginProvider } from './Contexts/LoginContext'; // Add LoginProvider here
-import { MobileMenuProvider } from './Contexts/MobileMenuContext'; // Import MobileMenuProvider
+import { LoginProvider } from './Contexts/LoginContext';
+import { MobileMenuProvider } from './Contexts/MobileMenuContext';
 import MainLayout from './Components/Layout/MainLayout';
-import Dashboard from './Pages/Dashboard';
-import Settings from './Pages/Settings';
-import Students from './Pages/Students';
-import Admins from './Pages/Admins';
 import Login from './Pages/Login';
-import PrivateRoute from './Components/PrivateRoute'
-
+import PrivateRoute from './Components/PrivateRoute';
 
 function App() {
   return (
     <LoginProvider>
       <SidebarProvider>
-        <MobileMenuProvider> {/* Wrap in MobileMenuProvider */}
+        <MobileMenuProvider>
           <Router>
             <Routes>
-              {/* Login and Signup routes */}
+              {/* Login route */}
               <Route path="/login" element={<Login />} />
 
-              {/* All other routes use the MainLayout */}
-              <Route path="/" element={
+              {/* All other routes use MainLayout */}
+              <Route path="/*" element={
                 <PrivateRoute>
                   <MainLayout />
-                </PrivateRoute>}>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="students" element={<Students />} />
-                <Route path="admins" element={<Admins />} />
-                <Route path="settings" element={<Settings />} />
-              </Route>
+                </PrivateRoute>
+              } />
             </Routes>
           </Router>
         </MobileMenuProvider>
       </SidebarProvider>
     </LoginProvider>
-
   );
 }
 

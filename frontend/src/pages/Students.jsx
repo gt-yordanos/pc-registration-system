@@ -119,7 +119,7 @@ const Students = () => {
   };
 
   return (
-    <div className="navbar min-h-screen p-4">
+    <div className="navbar min-h-screen p-4 transition-all duration-300">
       <div className="flex items-center justify-end mb-8 space-x-2">
         <FaUserPlus
           className=" text-2xl cursor-pointer hover:text-blue-400 transition duration-300"

@@ -78,7 +78,7 @@ const Dashboard = () => {
   const recentPCRegistrations = pcs.filter(pc => new Date(pc.created_at).getMonth() === new Date().getMonth()).length;
 
   return (
-    <div className="p-4 w-full h-full navbar">
+    <div className="p-4 w-full h-full navbar transition-all duration-300">
       <h1 className="text-2xl font-bold mb-4">Super Admin Dashboard</h1>
       <div className="grid grid-cols-1 custom:grid-cols-[55%,45%] gap-4 mb-4">
         <div className="grid grid-cols-1 gap-4">

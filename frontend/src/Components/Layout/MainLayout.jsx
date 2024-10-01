@@ -24,20 +24,17 @@ function MainLayout() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen w-screen">
+    <div className="flex flex-col h-screen w-screen transition-all duration-300">
   
       {!isLoginPage && <Navbar />}
       <div className={`flex h-[87%] w-full transition-all duration-300`}>
         {!isLoginPage && (
           <>
             <div>
-              {/* Sidebar for desktop view */}
               {!isMobileView && <Sidebar />}
             </div>
-           
-      
-              {/* Main content section */}
-              <ContentSection selectedItem={selectedItem}  />
+
+            <ContentSection />
           
           </>
         )}

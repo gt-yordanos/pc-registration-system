@@ -45,7 +45,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className='relative navbar h-[13%] mx-2 rounded-lg my-1 flex items-center justify-between px-4'>
+    <div className='relative navbar h-[13%] mx-2 rounded-lg my-1 flex items-center justify-between px-4 transition-all duration-300'>
       <div className='flex items-center gap-10 sm:gap-0'>
         {/* Menu icon for mobile */}
         <div className=" h-12 w-12 flex items-center justify-center cursor-pointer rounded-full sm:hidden">
