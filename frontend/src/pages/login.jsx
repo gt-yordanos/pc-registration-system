@@ -35,7 +35,7 @@ const Login = () => {
   
 
   return (
-    <div className='flex flex-col justify-center items-center min-h-screen sidebar'>
+    <div className='flex flex-col justify-center items-center min-h-screen sidebar transition-all duration-300'>
       <div className='fixed top-4 mx-auto'><ThemeToggler/></div>
       
       <div className='text-center'>
