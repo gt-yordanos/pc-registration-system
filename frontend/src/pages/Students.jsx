@@ -67,7 +67,6 @@ const Students = () => {
       student_name: student.student_name,
       phoneNumber: student.phoneNumber,
       email: student.email,
-      status: student.status,
     };
 
     if (creatingNew) {
@@ -101,7 +100,6 @@ const Students = () => {
     setEditId(editId);
     setCreatingNew(false);
   };
-
   const handleDelete = (index) => {
     const studentId = students[index].student_id;
 
@@ -166,7 +164,7 @@ const Students = () => {
                   students
                     .filter(student => student.student_name.toLowerCase().includes(searchTerm.toLowerCase()))
                     .map((student, index) => (
-                      <tr key={student.id || index} className={`navbar border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
+                      <tr key={student.student_id || index} className={`navbar border-b border-blue-500 ${index === editingIndex ? 'bg-[#002B6C]' : ''}`}>
                         <td className="p-2">{index + 1}</td>
                         <td className="p-2">
                           <input

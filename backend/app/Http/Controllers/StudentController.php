@@ -159,55 +159,52 @@ return response()->json($response);
         $student = Student::with('pc')->findOrFail($id);
         return response()->json($student);
     }
-    // Update method
-public function update(Request $request, $id)
-{
-    // Find the student by student_id
-    $student = Student::where('student_id', $id)->with('pc')->first();
-    
-    if (!$student) {
-        return response()->json(['message' => 'Student not found'], 404);
-    }
-
-    // Validation rules
-    $rules = [
-        'student_name' => 'required|string',
-        'phoneNumber' => 'nullable|string',
-        'email' => 'email|unique:students,email,' . $student->id,
-        'pc_brand' => 'required|string',
-        'pc_color' => 'required|string',
-    ];
-
-    // Check if the serial_number is being updated
-    if ($request->has('serial_number')) {
-        $pc = PC::where('owner_id', $student->id)->first();
-        $rules['serial_number'] = 'required|string|unique:pcs,serial_number,' . ($pc ? $pc->pc_id : 'null');
-    }
-
-    // Validate the input
-    $validator = Validator::make($request->all(), $rules);
-
-    // Handle validation errors
-    if ($validator->fails()) {
-        return response()->json($validator->errors(), 400);
-    }
-
-    // Update student information
-    $student->update($request->only(['student_name', 'phoneNumber', 'email']));
-
-    // Update PC information if provided
-    if ($request->has('serial_number') || $request->has('pc_brand') || $request->has('pc_color')) {
-        $pc = PC::where('owner_id', $student->id)->first(); // Fetch PC by owner_id
-        if ($pc) {
-            $pc->update($request->only(['serial_number', 'pc_brand', 'pc_color']));
+    public function update(Request $request, $id)
+    {
+        // Find the student by student_id (not id)
+        $student = Student::where('student_id', $id)->with('pc')->first();
+        
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
         }
+    
+        // Validation rules
+        $rules = [
+            'student_name' => 'required|string',
+            'phoneNumber' => 'nullable|string',
+            'email' => 'email|unique:students,email,' . $student->id, // Allow the current student's email
+            'pc_brand' => 'required|string',
+            'pc_color' => 'required|string',
+        ];
+    
+        // Check if the serial_number is being updated
+        if ($request->has('serial_number')) {
+            $pc = PC::where('owner_id', $student->id)->first(); // Corrected to use student_id
+            $rules['serial_number'] = 'required|string|unique:pcs,serial_number,' . ($pc ? $pc->pc_id : 'null');
+        }
+    
+        // Validate the input
+        $validator = Validator::make($request->all(), $rules);
+    
+        // Handle validation errors
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+    
+        // Update student information
+        $student->update($request->only(['student_name', 'phoneNumber', 'email']));
+    
+        // Update PC information if provided
+        if ($request->has('serial_number') || $request->has('pc_brand') || $request->has('pc_color')) {
+            $pc = PC::where('owner_id', $student->id)->first(); // Corrected to use student_id
+            if ($pc) {
+                $pc->update($request->only(['serial_number', 'pc_brand', 'pc_color']));
+            }
+        }
+    
+        return response()->json(['message' => 'Student updated successfully', 'student' => $student], 200);
     }
-
-    return response()->json(['message' => 'Student updated successfully', 'student' => $student], 200);
-}
-
-
-
+    
     // Delete a student
 public function delete($id)
 {

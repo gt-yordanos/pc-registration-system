@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PC Registration System'),
+        title: Text('PC Registration System!'),
       ),
       body: Center(
         child: Text(
