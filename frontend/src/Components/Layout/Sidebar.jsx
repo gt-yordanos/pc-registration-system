@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSidebar } from '../../Contexts/SidebarContext';
 import dashboardIcon from '../../assets/bxs-dashboard.svg';
 import studentsIcon from '../../assets/student-person-part-2-svgrepo-com.svg';
-import adminsIcon from '../../assets/manager-avatar-svgrepo-com.svg';
+import huSecurityIcon from '../../assets/manager-avatar-svgrepo-com.svg';
 import settingsIcon from '../../assets/bxs-cog.svg';
 import minimizeIcon from '../../assets/minimize-svgrepo-com.svg';
 import maximizeIcon from '../../assets/maximize-svgrepo-com.svg';
@@ -19,8 +19,7 @@ const Sidebar = () => {
 
   return (
     <div className={`sidebar h-[99%] ml-2 mr-2 rounded-lg transition-all duration-300 
-      hidden sm:block ${isCollapsed ? 'w-20' : 'w-48'} flex-none`}
-    >
+      hidden sm:block ${isCollapsed ? 'w-20' : 'w-48'} flex-none`}>
       {/* Sidebar links */}
       <div className={`flex items-center p-4  ${isCollapsed ? 'justify-center' :  'justify-between'}`}>
         <h2 className={`text-white ${isCollapsed ? 'hidden' : 'block'}`}>Menu</h2>
@@ -32,7 +31,7 @@ const Sidebar = () => {
         </div>
       </div>
       <ul className='p-4 flex flex-col gap-2'>
-        {['dashboard', 'students', 'admins', 'settings'].map((item) => (
+        {['dashboard', 'students', 'hu-security', 'settings'].map((item) => (
           <li key={item}>
             <Link
               to={`/${item}`}
@@ -41,8 +40,8 @@ const Sidebar = () => {
                 handleItemSelect(item);
               }}
             >
-              <img src={item === 'dashboard' ? dashboardIcon : item === 'students' ? studentsIcon : item === 'admins' ? adminsIcon : settingsIcon} alt={`${item} Icon`} className='w-8 bg-[#CCFFFF] rounded-lg p-1' />
-              {!isCollapsed && <span className=''>{item.charAt(0).toUpperCase() + item.slice(1)}</span>}
+              <img src={item === 'dashboard' ? dashboardIcon : item === 'students' ? studentsIcon : item === 'hu-security' ? huSecurityIcon : settingsIcon} alt={`${item} Icon`} className='w-8 bg-[#CCFFFF] rounded-lg p-1' />
+              {!isCollapsed && <span className=''>{item === 'hu-security' ? 'HU Security' : item.charAt(0).toUpperCase() + item.slice(1)}</span>}
             </Link>
           </li>
         ))}

@@ -118,7 +118,7 @@ public function login(Request $request)
 }
 
 
-public function destroy($id)
+public function delete($id)
 {
     // Find the admin by admin_id or fail
     $admin = Admin::where('admin_id', $id)->firstOrFail();

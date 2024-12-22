@@ -12,7 +12,7 @@ const ContentSection = () => {
       <Routes>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="students" element={<Students />} />
-        <Route path="admins" element={<Admins />} />
+        <Route path="hu-security" element={<Admins />} />
         <Route path="settings" element={<Settings />} />
         {/* Optionally add a default route */}
         <Route path="*" element={<Dashboard />} /> 
